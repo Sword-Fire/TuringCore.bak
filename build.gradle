@@ -1,0 +1,88 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.6.20'
+    id 'groovy'
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+//取消-all后缀
+shadowJar {
+    archiveClassifier.set('')
+    transform(Log4j2PluginsCacheFileTransformer)
+    mergeServiceFiles()
+}
+
+group 'net.geekmc'
+version '1.0-SNAPSHOT'
+
+repositories {
+    maven { url 'https://repo.spongepowered.org/maven' }
+    maven {
+        url 'https://www.jitpack.io'
+        //credentials { username authToken }
+    }
+    mavenCentral()
+}
+
+dependencies {
+
+    // Minestom
+    compileOnly('com.github.Minestom:Minestom:7af3e1c2e2') {
+        exclude group: 'org.tinylog'
+    }
+
+    // kotlin
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:1.6.20"
+    // kotlin coroutines,which Minestom seems don't contain
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+
+    //dependency for groovy
+    compileOnly 'org.fusesource.jansi:jansi:2.4.0'
+
+    // groovy
+    compileOnly platform('org.apache.groovy:groovy-all:4.0.1')
+
+    // lombok
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+
+    // logging
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.17.1'
+    compileOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.1'
+
+    // snake-yaml
+    compileOnly 'org.yaml:snakeyaml:1.30'
+
+    // KStom
+    // https://github.com/Project-Cepi/KStom
+    compileOnly 'com.github.Project-Cepi:KStom:67be3adc9d'
+
+    //Turing
+    compileOnly 'net.geekmc.turing:Turing:1.0.8'
+//    implementation 'com.github.Sword-Fire:Turing:1.0.8'
+
+
+    // source dependency
+    // 本项目build.gradle & 本项目settings.gralde & 依赖项目build.gradle 的 group 必须相同
+    // artifact名也必须相同 取决于依赖项的setting.gradle
+    // version 为git一个commit的tag
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+//设置kotlin的编译目标版本
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+sourceCompatibility = 17
+targetCompatibility = 17

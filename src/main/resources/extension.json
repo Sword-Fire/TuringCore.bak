@@ -1,0 +1,7 @@
+{
+  "entrypoint": "net.geekmc.minotaur.Minotaur",
+  "name": "Minotaur",
+  "version": "1.0.0",
+  "dependencies": [
+  ]
+}

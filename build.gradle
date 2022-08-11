@@ -14,8 +14,8 @@ shadowJar {
     mergeServiceFiles()
 }
 
-group 'net.geekmc'
-version '1.0-SNAPSHOT'
+group 'net.geekmc.turingcore'
+version '1.0.0'
 
 repositories {
     maven { url 'https://repo.spongepowered.org/maven' }
@@ -27,6 +27,10 @@ repositories {
 }
 
 dependencies {
+
+    //Turing
+    compileOnly 'net.geekmc.turing:Turing:1.0.0'
+    compileOnly 'net.geekmc.turinglib:TuringLib:1.0.0'
 
     // Minestom
     compileOnly('com.github.Minestom:Minestom:7af3e1c2e2') {
@@ -60,11 +64,6 @@ dependencies {
     // KStom
     // https://github.com/Project-Cepi/KStom
     compileOnly 'com.github.Project-Cepi:KStom:67be3adc9d'
-
-    //Turing
-    compileOnly 'net.geekmc.turing:Turing:1.0.8'
-//    implementation 'com.github.Sword-Fire:Turing:1.0.8'
-
 
     // source dependency
     // 本项目build.gradle & 本项目settings.gralde & 依赖项目build.gradle 的 group 必须相同

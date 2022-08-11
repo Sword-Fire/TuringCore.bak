@@ -1,7 +1,6 @@
 {
-  "entrypoint": "net.geekmc.minotaur.Minotaur",
-  "name": "Minotaur",
+  "entrypoint": "net.geekmc.turingcore.TuringCore",
+  "name": "TuringCore",
   "version": "1.0.0",
-  "dependencies": [
-  ]
+  "dependencies": ["TuringLib"]
 }

@@ -13,7 +13,7 @@ object GamemodeCommand : Command("gamemode", "gm") {
 
 
     private fun sendUsageMessage(sender: CommandSender) =
-        sender.sendMessage("正确用法: /gamemode ( 0 | 1 | 2 | 3 | SURVIVAL | CREATIVE | ADVENTURE | SPECTATOR ) [玩家名字]")
+        sender.sendMessage("<red>正确用法</red>: <rainbow>/gamemode ( 0 | 1 | 2 | 3 | SURVIVAL | CREATIVE | ADVENTURE | SPECTATOR ) [玩家名字]")
 
     private val gameModeArgument =
         ArgumentType.Word("mode").from("0", "1", "2", "3", "SURVIVAL", "CREATIVE", "ADVENTURE", "SPECTATOR")

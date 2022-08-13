@@ -6,6 +6,7 @@ import net.minestom.server.command.builder.CommandExecutor
 import net.minestom.server.event.entity.EntityTickEvent
 import net.minestom.server.potion.PotionEffect
 import world.cepi.kstom.Manager
+import world.cepi.kstom.event.listen
 import world.cepi.kstom.event.listenOnly
 import javax.script.ScriptEngineManager
 
@@ -20,10 +21,6 @@ object TestCommand : Command("test", "t") {
                 val serializer = LegacyComponentSerializer.builder().build()
                 sender.sendMessage(serializer.deserialize("§ahello &#FFF0F5gu&ays"))
             }
-
-        Manager.globalEvent.listenOnly<EntityTickEvent> {
-            entity.removeEffect(PotionEffect.ABSORPTION)
-        }
 
 //        addSyntax((sender, context) -> {
 //

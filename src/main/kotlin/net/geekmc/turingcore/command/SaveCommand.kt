@@ -1,6 +1,7 @@
-package net.geekmc.turing.command
+package net.geekmc.turingcore.command
 
-import net.geekmc.turing.instance.InstanceService
+
+import net.geekmc.turinglib.instance.InstanceService
 import net.minestom.server.command.builder.Command
 
 object SaveCommand : Command("save") {

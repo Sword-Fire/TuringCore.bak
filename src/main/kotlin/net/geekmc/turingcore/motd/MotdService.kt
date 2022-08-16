@@ -19,7 +19,7 @@ object MotdService {
      * Load the icon from the motd.png file and set the ping text,
      * which will be sent to player when they ping the server.
      */
-    fun enableMotd() {
+    fun init() {
 
         motdData = ResponseData()
         motdData.description = Component.text()

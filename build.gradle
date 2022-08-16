@@ -65,6 +65,9 @@ dependencies {
     // https://github.com/Project-Cepi/KStom
     compileOnly 'com.github.Project-Cepi:KStom:67be3adc9d'
 
+    // MiniMessage
+    implementation "net.kyori:adventure-text-minimessage:4.11.0"
+
     // source dependency
     // 本项目build.gradle & 本项目settings.gralde & 依赖项目build.gradle 的 group 必须相同
     // artifact名也必须相同 取决于依赖项的setting.gradle

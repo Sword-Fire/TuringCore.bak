@@ -1,2 +1,2 @@
 # TuringCore
-TuringCore offers servarl good features for Minestom server.
+TuringCore offers several good features for Minestom server.

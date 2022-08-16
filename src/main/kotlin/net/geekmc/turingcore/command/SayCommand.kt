@@ -1,5 +1,6 @@
 package net.geekmc.turingcore.command
 
+import net.geekmc.turinglib.color.send
 import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
 import net.minestom.server.command.CommandSender
@@ -18,7 +19,7 @@ object SayCommand : Command("say") {
 
         defaultExecutor =
             CommandExecutor { sender, _ ->
-                sender.sendMessage("&c命令用法不正确。")
+                sender.send("&c命令用法不正确。")
             }
 
         addSyntax(
@@ -28,7 +29,7 @@ object SayCommand : Command("say") {
                 val finder = context.get<EntityFinder>("player")
                 val p = finder.findFirstPlayer(null, null)
                 if (p == null) { //
-                    sender.sendMessage("Can not find the player ${context.getRaw("player")}.")
+                    sender.send("Can not find the player ${context.getRaw("player")}.")
                     return@addSyntax // 找不到指定的玩家，直接返回
                 }
                 val playerChatEvent = PlayerChatEvent(

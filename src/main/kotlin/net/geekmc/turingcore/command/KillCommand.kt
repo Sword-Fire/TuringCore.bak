@@ -1,5 +1,6 @@
 package net.geekmc.turingcore.command
 
+import net.geekmc.turinglib.color.send
 import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
 import net.minestom.server.command.CommandSender
@@ -20,13 +21,13 @@ object KillCommand : Command("kill") {
 
         defaultExecutor =
             CommandExecutor { sender, _ ->
-                sender.sendMessage("&c命令用法不正确。")
+                sender.send("&c命令用法不正确。")
             }
 
         addSyntax({ sender: CommandSender, context: CommandContext ->
 
             if (sender !is Player) {
-                sender.sendMessage("&c只有玩家能使用这个命令")
+                sender.send("&c只有玩家能使用这个命令")
                 return@addSyntax
             }
             sender.kill()
@@ -38,7 +39,7 @@ object KillCommand : Command("kill") {
             val finder = context.get<EntityFinder>("player")
             val p = finder.findFirstPlayer(null, null)
             if (p == null) {
-                sender.sendMessage("找不到玩家 ${context.getRaw("player")}.")
+                sender.send("找不到玩家 ${context.getRaw("player")}.")
                 return@addSyntax
             }
 

@@ -1,5 +1,6 @@
 package net.geekmc.turingcore.command
 
+import net.geekmc.turinglib.color.send
 import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.CommandExecutor
@@ -13,7 +14,7 @@ object GamemodeCommand : Command("gamemode", "gm") {
 
 
     private fun sendUsageMessage(sender: CommandSender) =
-        sender.sendMessage("<red>正确用法</red>: <rainbow>/gamemode ( 0 | 1 | 2 | 3 | SURVIVAL | CREATIVE | ADVENTURE | SPECTATOR ) [玩家名字]")
+        sender.send("<red>正确用法</red>: <rainbow>/gamemode ( 0 | 1 | 2 | 3 | SURVIVAL | CREATIVE | ADVENTURE | SPECTATOR ) [玩家名字]")
 
     private val gameModeArgument =
         ArgumentType.Word("mode").from("0", "1", "2", "3", "SURVIVAL", "CREATIVE", "ADVENTURE", "SPECTATOR")
@@ -24,19 +25,19 @@ object GamemodeCommand : Command("gamemode", "gm") {
         when (mode.uppercase()) {
             "0", "SURVIVAL" -> {
                 player.gameMode = GameMode.SURVIVAL
-                sender.sendMessage("已将玩家 ${player.username} 的游戏模式设置为 SURVIVAL")
+                sender.send("已将玩家 ${player.username} 的游戏模式设置为 SURVIVAL")
             }
             "1", "CREATIVE" -> {
                 player.gameMode = GameMode.CREATIVE
-                sender.sendMessage("已将玩家 ${player.username} 的游戏模式设置为 CREATIVE")
+                sender.send("已将玩家 ${player.username} 的游戏模式设置为 CREATIVE")
             }
             "2", "ADVENTURE" -> {
                 player.gameMode = GameMode.ADVENTURE
-                sender.sendMessage("已将玩家 ${player.username} 的游戏模式设置为 ADVENTURE")
+                sender.send("已将玩家 ${player.username} 的游戏模式设置为 ADVENTURE")
             }
             "3", "SPECTATOR" -> {
                 player.gameMode = GameMode.SPECTATOR
-                sender.sendMessage("已将玩家 ${player.username} 的游戏模式设置为 SPECTATOR")
+                sender.send("已将玩家 ${player.username} 的游戏模式设置为 SPECTATOR")
             }
             else -> throw IllegalArgumentException("未知的游戏模式 $mode")
         }
@@ -49,7 +50,7 @@ object GamemodeCommand : Command("gamemode", "gm") {
 
         addSyntax({ sender, context ->
             if (sender !is Player) {
-                sender.sendMessage("&c只有玩家能使用这个命令")
+                sender.send("&c只有玩家能使用这个命令")
                 return@addSyntax
             }
             setGameMode(sender, sender, context.get("mode"))
@@ -60,7 +61,7 @@ object GamemodeCommand : Command("gamemode", "gm") {
             val finder: EntityFinder = context.get("player")
 
             val player: Player = finder.findFirstPlayer(null, null) ?: run { //尝试搜索输入的玩家名
-                sender.sendMessage("&c未找到玩家 ${context.getRaw("player")}")
+                sender.send("&c未找到玩家 ${context.getRaw("player")}")
                 return@addSyntax
             }
 

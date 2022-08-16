@@ -1,20 +1,32 @@
 package net.geekmc.turingcore.skin
 
 import kotlinx.coroutines.*
-import net.geekmc.turinglib.coroutine.MinestomAsync
+import net.geekmc.turingcore.TuringCore
 import net.geekmc.turinglib.coroutine.MinestomSync
+import net.geekmc.turinglib.taml.Taml
+import net.geekmc.turinglib.util.GlobalEvent
 import net.minestom.server.entity.PlayerSkin
 import net.minestom.server.event.player.PlayerSpawnEvent
-import world.cepi.kstom.Manager
 import world.cepi.kstom.event.listen
 
 object OfflineSkinService {
 
-    fun enable() {
+    lateinit var skinData: Taml
+        private set
 
-        Manager.globalEvent.listen<PlayerSpawnEvent> {
+    fun init() {
+        skinData = Taml(TuringCore.INSTANCE.getResource("data/SkinData.yml")!!)
+
+        GlobalEvent.listen<PlayerSpawnEvent> {
             handler {
                 if (!isFirstSpawn) return@handler
+
+                // Look up by name,not uuid
+
+//                var skin: PlayerSkin? = skinData["name_map.${player.name}"]
+//                if (skin == null) {
+//
+//                }
 
                 val scope = CoroutineScope(Dispatchers.MinestomSync)
                 scope.launch {
@@ -26,6 +38,10 @@ object OfflineSkinService {
 
             }
         }
+    }
+
+    fun close() {
+
     }
 
 }

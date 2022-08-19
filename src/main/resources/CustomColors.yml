@@ -1,0 +1,32 @@
+# To type "&" , you could use "&&".
+#TODO 有些颜色太暗了
+#在搞出物品渲染后再调
+colors:
+  - "&r@#d44848" # Red
+  - "&dr@#bb5535" # Dark red
+
+  - "&g@#59c878" # Green
+  - "&dg@#006100" # Dark green
+  - "&mg@#01847f" # Marrs green
+
+  - "&y@#fff352" # Yellow
+  - "&dy@#bfd26a" # Dark yellow
+
+  - "&b@#002fa7" # blue
+
+  - "&gr@#b2b6b6" # Gray
+  - "&br@#470009" # Brown
+
+  - "&da@#1e2732" # Dark
+  - "&pi@#f9d3e3" # Pink
+  - "&pu@#422256" # Purple
+
+  - "&re@reset" # Reset
+  - "&i@italic" # Italic
+  - "&bo@bold" # Bold
+  - "&u@underlined" # underlined
+  - "&s@strikethrough" # Strikethrough
+  - "&ob@obfuscated" # obfuscated
+  - "&ra@rainbow" # Rainbow
+
+  - "&sakura@#FF69B4"

@@ -3,7 +3,4 @@ sourceControl {
     gitRepository("D:/IDEAProjects/TuringProject/Turing") {
         producesModule("net.geekmc.turing:Turing")
     }
-    gitRepository("D:/IDEAProjects/TuringProject/TuringLib") {
-        producesModule("net.geekmc.turinglib:TuringLib")
-    }
 }

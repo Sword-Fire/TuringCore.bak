@@ -30,7 +30,7 @@ dependencies {
 
     //Turing
     compileOnly 'net.geekmc.turing:Turing:1.0.0'
-    compileOnly 'net.geekmc.turinglib:TuringLib:1.0.0'
+//    compileOnly 'net.geekmc.turinglib:TuringLib:1.0.0'
 
     // Minestom
     compileOnly('com.github.Minestom:Minestom:7af3e1c2e2') {

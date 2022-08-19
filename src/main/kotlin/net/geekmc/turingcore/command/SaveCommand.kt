@@ -1,8 +1,8 @@
 package net.geekmc.turingcore.command
 
 
-import net.geekmc.turinglib.color.send
-import net.geekmc.turinglib.instance.InstanceService
+import net.geekmc.turingcore.color.send
+import net.geekmc.turingcore.instance.InstanceService
 import net.minestom.server.command.builder.Command
 
 object SaveCommand : Command("save") {

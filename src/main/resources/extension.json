@@ -1,6 +1,5 @@
 {
   "entrypoint": "net.geekmc.turingcore.TuringCore",
   "name": "TuringCore",
-  "version": "1.0.0",
-  "dependencies": ["TuringLib"]
+  "version": "1.0.0"
 }

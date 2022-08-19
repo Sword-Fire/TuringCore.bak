@@ -1,6 +1,6 @@
 package net.geekmc.turingcore.command
 
-import net.geekmc.turinglib.color.send
+import net.geekmc.turingcore.color.send
 import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
 import net.minestom.server.command.CommandSender

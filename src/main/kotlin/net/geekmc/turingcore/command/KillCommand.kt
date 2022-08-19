@@ -1,20 +1,13 @@
 package net.geekmc.turingcore.command
 
-import net.geekmc.turinglib.color.send
-import net.kyori.adventure.text.Component
-import net.minestom.server.MinecraftServer
+import net.geekmc.turingcore.color.send
 import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.CommandContext
 import net.minestom.server.command.builder.CommandExecutor
 import net.minestom.server.command.builder.arguments.ArgumentType
 import net.minestom.server.entity.Player
-import net.minestom.server.event.EventDispatcher
-import net.minestom.server.event.player.PlayerChatEvent
-import net.minestom.server.message.ChatPosition
-import net.minestom.server.message.Messenger
 import net.minestom.server.utils.entity.EntityFinder
-import world.cepi.kstom.Manager
 
 object KillCommand : Command("kill") {
     init {
@@ -24,7 +17,7 @@ object KillCommand : Command("kill") {
                 sender.send("&c命令用法不正确。")
             }
 
-        addSyntax({ sender: CommandSender, context: CommandContext ->
+        addSyntax({ sender: CommandSender, _: CommandContext ->
 
             if (sender !is Player) {
                 sender.send("&c只有玩家能使用这个命令")

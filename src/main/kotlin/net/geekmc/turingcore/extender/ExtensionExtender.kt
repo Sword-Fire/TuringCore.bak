@@ -1,8 +1,10 @@
 package net.geekmc.turingcore.util
 
 import net.minestom.server.extensions.Extension
-import java.io.File
+import java.io.IOException
+import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.StandardCopyOption
 
 /**
  * Save the resource to the given path.Will NOT replace the existing file.
@@ -15,7 +17,9 @@ fun Extension.saveResource(resource: String) {
     savePackagedResource(resource)
 }
 
-//问题：此处可能给个无文件
+/**
+ * Resolve the given path to the directory of extension.
+ */
 fun Extension.resolvePath(path: String): Path {
     return dataDirectory.resolve(path)
 }

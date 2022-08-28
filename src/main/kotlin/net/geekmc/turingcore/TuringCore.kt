@@ -43,8 +43,7 @@ class TuringCore : Extension() {
 
         logger.info("TuringCore initialized.")
 
-        // enable color util
-        // high priority
+        // enable color util, very high priority
         saveResource("CustomColors.yml")
         ColorUtil.init()
 

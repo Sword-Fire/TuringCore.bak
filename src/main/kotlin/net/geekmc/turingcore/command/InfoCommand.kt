@@ -1,40 +1,35 @@
 package net.geekmc.turingcore.command
 
 import net.geekmc.turingcore.color.send
-import net.geekmc.turingcore.extender.addPermission
-import net.geekmc.turingcore.extender.args
-import net.geekmc.turingcore.extender.findPlayers
-import net.geekmc.turingcore.extender.foldToString
-import net.minestom.server.command.builder.arguments.ArgumentWord
-import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
+import net.geekmc.turingcore.instance.InstanceService
+import net.minestom.server.command.builder.arguments.ArgumentLiteral
+import net.minestom.server.item.Material
 import world.cepi.kstom.command.arguments.literal
 import world.cepi.kstom.command.kommand.Kommand
 
+//TODO : 查看指针实体；指针方块；手上物品
+object InfoCommand : Kommand({
 
-object PermissionCommand : Kommand({
+    val hand = ArgumentLiteral("hand").setDefaultValue("hand")
+    val block by literal
+    val entity by literal
 
-    val add by literal
-    val remove = ArgumentWord("remove").from("remove", "rem")
-    val target = ArgumentEntity("target").onlyPlayers(true)
-    val perm = ArgumentWord("perm")
-
-    syntax {
-        sender.send("&r命令用法不正确。")
+    playerCallbackFailMessage = {
+        it.send("&r只有玩家能使用这个命令。")
     }
 
-    syntax(add, target, perm) {
+    syntax(hand) {
+        player.send(player.itemInMainHand.toItemNBT().toString())
+    }.onlyPlayers()
 
-        val players = (!target).findPlayers(sender)
-        if (players.isEmpty()) {
-            sender.send("&r找不到玩家: ${args.getRaw(target)}")
-            return@syntax
+    syntax(block){
+//        player.send(player.getTargetBlockPosition(20))
+        for (pos in player.getLineOfSight(5)){
+            val b = InstanceService.getInstance("world").getBlock(pos)
+            player.send(b.registry().material().toString()+" "+pos.toString())
         }
-        players.forEach {
-            it.addPermission(!perm)
-        }
 
-        sender.send("&g已将权限 ${!perm} 赋与 ${players.foldToString()}")
-    }
+    }.onlyPlayers()
 
-}, "perm", "p")
+}, "info")
 

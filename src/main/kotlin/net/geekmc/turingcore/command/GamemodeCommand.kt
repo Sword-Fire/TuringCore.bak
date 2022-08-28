@@ -5,6 +5,7 @@ import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.CommandExecutor
 import net.minestom.server.command.builder.arguments.ArgumentType
+import net.minestom.server.command.builder.arguments.ArgumentWord
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
@@ -17,8 +18,8 @@ object GamemodeCommand : Command("gamemode", "gm") {
         sender.send("<red>正确用法</red>: <rainbow>/gamemode ( 0 | 1 | 2 | 3 | SURVIVAL | CREATIVE | ADVENTURE | SPECTATOR ) [玩家名字]")
 
     private val gameModeArgument =
-        ArgumentType.Word("mode").from("0", "1", "2", "3", "SURVIVAL", "CREATIVE", "ADVENTURE", "SPECTATOR")
-    private val targetArgument: ArgumentEntity = ArgumentType.Entity("player").onlyPlayers(true).singleEntity(true)
+        ArgumentWord("mode").from("0", "1", "2", "3", "SURVIVAL", "CREATIVE", "ADVENTURE", "SPECTATOR")
+    private val targetArgument: ArgumentEntity = ArgumentEntity("player").onlyPlayers(true).singleEntity(true)
 
 
     private fun setGameMode(sender: CommandSender, player: Player, mode: String) {

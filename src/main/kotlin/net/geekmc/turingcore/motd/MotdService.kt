@@ -1,15 +1,19 @@
 package net.geekmc.turingcore.motd
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
-import net.minestom.server.MinecraftServer
+import net.geekmc.turingcore.TuringCore
+import net.geekmc.turingcore.color.toComponent
+import net.geekmc.turingcore.taml.Taml
+import net.geekmc.turingcore.extender.GlobalEvent
+import net.geekmc.turingcore.extender.resolvePath
+import net.geekmc.turingcore.extender.saveResource
 import net.minestom.server.event.server.ServerListPingEvent
 import net.minestom.server.ping.ResponseData
-import java.io.File
+import world.cepi.kstom.event.listenOnly
 import java.io.IOException
 import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.*
+import kotlin.collections.List
+import kotlin.io.path.exists
 
 object MotdService {
 
@@ -21,21 +25,21 @@ object MotdService {
      */
     fun init() {
 
+        // save resource
+        TuringCore.INSTANCE.saveResource("motd/icon.png")
+        TuringCore.INSTANCE.saveResource("motd/motd.yml")
+
+        // set motd response data
         motdData = ResponseData()
-        motdData.description = Component.text()
-            .append(
-                Component.text("               Turing Server\n")
-                    .color(NamedTextColor.RED)
-            )
-            .append(
-                Component.text("              click to join!")
-                    .color(NamedTextColor.AQUA)
-            )
-            .build()
+        val motdConfig = Taml(TuringCore.INSTANCE.resolvePath("motd/motd.yml"), MotdService.javaClass.classLoader)
+
+        //出于玄学原因不支持 MiniMessage
+        val descriptionList: List<String> = motdConfig.get("description", listOf())
+        motdData.description = (descriptionList[0] + "\n" + descriptionList[1]).toComponent()
         motdData.favicon = getIconAsBase64()
 
-        MinecraftServer.getGlobalEventHandler().addListener(ServerListPingEvent::class.java) {
-            it.responseData = motdData
+        GlobalEvent.listenOnly<ServerListPingEvent> {
+            responseData = motdData
         }
     }
 
@@ -44,11 +48,10 @@ object MotdService {
      * @return base64 encoded icon with the Mojang-assigned prefix,"" if the icon is not found or could not be encoded.
      */
     private fun getIconAsBase64(): String {
-        val sep = File.separator
-        val path = "." + sep + "motd" + sep + "icon.png"
-        if (!File(path).exists()) return ""
+        val path = TuringCore.INSTANCE.resolvePath("motd/icon.png")
+        if (!path.exists()) return ""
         try {
-            val bytes = Files.readAllBytes(Paths.get(path))
+            val bytes = Files.readAllBytes(path)
             return "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes)
         } catch (e: IOException) {
             e.printStackTrace()

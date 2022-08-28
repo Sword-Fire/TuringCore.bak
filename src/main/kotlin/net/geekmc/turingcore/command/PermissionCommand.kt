@@ -1,43 +1,41 @@
 package net.geekmc.turingcore.command
 
 import net.geekmc.turingcore.color.send
-import net.minestom.server.command.CommandSender
-import net.minestom.server.command.builder.Command
-import net.minestom.server.command.builder.CommandContext
-import net.minestom.server.command.builder.CommandExecutor
-import net.minestom.server.command.builder.arguments.ArgumentType
-import net.minestom.server.entity.Player
+import net.geekmc.turingcore.extender.addPermission
+import net.geekmc.turingcore.extender.args
+import net.geekmc.turingcore.extender.findPlayers
+import net.geekmc.turingcore.extender.foldToString
+import net.minestom.server.command.builder.arguments.ArgumentWord
+import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.utils.entity.EntityFinder
+import world.cepi.kstom.command.arguments.literal
+import world.cepi.kstom.command.kommand.Kommand
 
-object KillCommand : Command("kill") {
-    init {
 
-        defaultExecutor =
-            CommandExecutor { sender, _ ->
-                sender.send("&c命令用法不正确。")
-            }
+object PermissionCommand : Kommand({
 
-        addSyntax({ sender: CommandSender, _: CommandContext ->
+    val add by literal
+    val remove = ArgumentWord("remove").from("remove", "rem")
+    val target = ArgumentEntity("target").onlyPlayers(true)
+    val perm = ArgumentWord("perm")
 
-            if (sender !is Player) {
-                sender.send("&c只有玩家能使用这个命令")
-                return@addSyntax
-            }
-            sender.kill()
-
-        })
-
-        addSyntax({ sender: CommandSender, context: CommandContext ->
-
-            val finder = context.get<EntityFinder>("player")
-            val p = finder.findFirstPlayer(null, null)
-            if (p == null) {
-                sender.send("找不到玩家 ${context.getRaw("player")}.")
-                return@addSyntax
-            }
-
-            p.kill()
-
-        }, ArgumentType.Entity("player").onlyPlayers(true).singleEntity(true))
+    syntax {
+        sender.send("&r命令用法不正确: /${context.input}")
     }
-}
+
+    syntax(add, target, perm) {
+
+        val players = (!target).findPlayers(sender)
+        if (players.isEmpty()) {
+            sender.send("&r找不到玩家: ${args.getRaw(target)}")
+            return@syntax
+        }
+        players.forEach {
+            it.addPermission(!perm)
+        }
+
+        sender.send("&g已将权限 ${!perm} 赋与 ${players.foldToString()}")
+    }
+
+}, "perm", "p")
+

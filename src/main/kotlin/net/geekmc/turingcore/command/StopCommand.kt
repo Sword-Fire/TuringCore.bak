@@ -8,7 +8,7 @@ object StopCommand :Command("stop"){
 
     init {
         setDefaultExecutor { sender, _ ->
-            sender.send("<red>正在关闭服务器...")
+            sender.send("&r正在关闭服务器...")
             MinecraftServer.stopCleanly()
         }
     }

@@ -2,21 +2,17 @@ package net.geekmc.turingcore.skin
 
 import kotlinx.coroutines.*
 import net.geekmc.turingcore.TuringCore
+import net.geekmc.turingcore.color.send
 import net.geekmc.turingcore.coroutine.MinestomAsync
-import net.geekmc.turingcore.coroutine.MinestomSync
 import net.geekmc.turingcore.taml.Taml
-import net.geekmc.turingcore.util.GlobalEvent
-import net.geekmc.turingcore.util.resolvePath
+import net.geekmc.turingcore.extender.GlobalEvent
+import net.geekmc.turingcore.extender.resolvePath
 import net.minestom.server.entity.PlayerSkin
 import net.minestom.server.event.player.PlayerSpawnEvent
 import world.cepi.kstom.event.listen
-import net.geekmc.turingcore.util.saveResource
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
+import net.geekmc.turingcore.extender.saveResource
 
-//延时:1day
 
-//TODO 设置一个私有的CoroutineScope，并在close的时候关闭它
 object SkinService {
 
     private lateinit var skinData: Taml
@@ -32,6 +28,7 @@ object SkinService {
         // 加载皮肤数据
         TuringCore.INSTANCE.saveResource("data/SkinData.yml")
         skinData = Taml(
+
             TuringCore.INSTANCE.resolvePath("data/SkinData.yml"),
             SkinService::class.java
         )
@@ -50,9 +47,11 @@ object SkinService {
                         player.skin = skinBean.toPlayerSkin()
                     }
                     val skin = withContext(Dispatchers.IO) { PlayerSkin.fromUsername(player.username) } ?: return@launch
-                    // 获取的皮肤是新的，则更新皮肤
-                    // 如果缓存不存在，也会更新皮肤
-                    if (skinBean == null || skinBean.toPlayerSkin() != skin) {
+                    // 获取的皮肤是新的，则更新皮肤；
+                    // 如果缓存不存在，也会更新皮肤。
+                    // BUG:每次获取的材质里都有一小段字符不一样，因此必定会更新。暂时无法解决。
+                    if (skinBean == null || skinBean.toPlayerSkin().textures() != skin.textures()) {
+
                         skinData["dataByName.${player.username}"] = skin.toBean() // save as PlayerSkinBean
                         player.skin = skin
                     }

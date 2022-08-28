@@ -30,3 +30,5 @@ colors:
   - "&ra@rainbow" # Rainbow
 
   - "&sakura@#FF69B4"
+
+  - "&Gg@gradient:#FFD700:#FFFF00" # 渐变金

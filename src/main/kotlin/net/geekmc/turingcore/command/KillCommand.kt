@@ -6,6 +6,7 @@ import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.CommandContext
 import net.minestom.server.command.builder.CommandExecutor
 import net.minestom.server.command.builder.arguments.ArgumentType
+import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.entity.Player
 import net.minestom.server.utils.entity.EntityFinder
 
@@ -38,6 +39,6 @@ object KillCommand : Command("kill") {
 
             p.kill()
 
-        }, ArgumentType.Entity("player").onlyPlayers(true).singleEntity(true))
+        }, ArgumentEntity("player").onlyPlayers(true).singleEntity(true))
     }
 }

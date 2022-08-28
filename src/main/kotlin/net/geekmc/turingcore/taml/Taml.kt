@@ -1,6 +1,5 @@
 package net.geekmc.turingcore.taml
 
-import org.apache.tools.ant.taskdefs.Classloader
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor
@@ -13,7 +12,7 @@ import kotlin.collections.LinkedHashMap
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.exists
 
-class Taml(val path: Path,clazz: Class<*>? = null, yaml: Yaml? = null) {
+class Taml(path: Path, yaml: Yaml = defaultYaml) {
 
     companion object {
 
@@ -28,38 +27,32 @@ class Taml(val path: Path,clazz: Class<*>? = null, yaml: Yaml? = null) {
         }
     }
 
+    private val path: Path
     private val rootObject: MutableMap<Any?, Any?>
-    var usedYaml: Yaml
-        private set
+    private var yaml: Yaml
 
     init {
-
-
-        // yaml 作为构造参数比 clazz 有更高优先级。
-        usedYaml = yaml
-            ?: if (clazz != null) Yaml(
-                CustomClassLoaderConstructor(clazz.classLoader),
-                Representer(),
-                defaultDumperOptions
-            ) else defaultYaml
-
+        this.path = path
+        this.yaml = yaml
         rootObject = if (!path.exists()) {
             LinkedHashMap()
         } else {
-            usedYaml.load(FileReader(path.absolutePathString())) ?: LinkedHashMap()
+            yaml.load(FileReader(path.absolutePathString())) ?: LinkedHashMap()
         }
-
     }
 
-    // Taml(String, Yaml)
-    constructor(pathStr: String, yaml: Yaml = defaultYaml, clazz: Class<*>? = null) : this(
-        Path.of(pathStr),
-        clazz,
-        yaml
+    constructor(path: Path, clazz: Class<*>) : this(
+        path,
+        Yaml(CustomClassLoaderConstructor(clazz.classLoader), Representer(), defaultDumperOptions)
     )
 
-    operator fun <T> get(keyString: String): T? {
-        val keys = keyString.split(".")
+    constructor(path: Path, cLoader: ClassLoader) : this(
+        path,
+        Yaml(CustomClassLoaderConstructor(cLoader), Representer(), defaultDumperOptions)
+    )
+
+    operator fun <T> get(keyStr: String): T? {
+        val keys = keyStr.split(".")
         var obj: Map<Any?, Any?> = rootObject
         val iter = keys.iterator()
         while (iter.hasNext()) {
@@ -90,7 +83,7 @@ class Taml(val path: Path,clazz: Class<*>? = null, yaml: Yaml? = null) {
         return null
     }
 
-    operator fun <T> get(keyStr: String, default: T): T {
+    fun <T> get(keyStr: String, default: T): T {
         return get(keyStr) ?: default
     }
 
@@ -130,7 +123,7 @@ class Taml(val path: Path,clazz: Class<*>? = null, yaml: Yaml? = null) {
     }
 
     fun save() {
-        usedYaml.dump(rootObject, FileWriter(path.absolutePathString()))
+        yaml.dump(rootObject, FileWriter(path.absolutePathString()))
     }
 
 }

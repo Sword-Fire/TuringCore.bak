@@ -1,10 +1,7 @@
-package net.geekmc.turingcore.util
+package net.geekmc.turingcore.extender
 
 import net.minestom.server.extensions.Extension
-import java.io.IOException
-import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 
 /**
  * Save the resource to the given path.Will NOT replace the existing file.

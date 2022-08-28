@@ -1,7 +1,6 @@
-package net.geekmc.turingcore.util;
+package net.geekmc.turingcore.extender;
 
 import net.minestom.server.entity.Player
-import net.minestom.server.network.packet.client.ClientPacketsHandler.Play
 
 inline fun <T> Iterable<T>.foldToString(filter: String, toString: (element: T) -> String): String {
     var firstOne = true

@@ -16,7 +16,7 @@ object InstanceService {
 
     // Instance inner ID -> Instance
     private val map: MutableMap<String, Instance> = HashMap()
-    const val MAIN_INSTANCE = "world2"
+    const val MAIN_INSTANCE = "world"
 
     fun initialize() {
         manager = MinecraftServer.getInstanceManager()

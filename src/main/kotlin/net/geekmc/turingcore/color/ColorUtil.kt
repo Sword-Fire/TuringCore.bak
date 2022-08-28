@@ -4,7 +4,7 @@ import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.taml.Taml
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
-import net.geekmc.turingcore.util.resolvePath
+import net.geekmc.turingcore.extender.resolvePath
 
 fun String.toComponent(): Component {
     return ColorUtil.castStringToComponent(this)
@@ -23,20 +23,11 @@ object ColorUtil {
     fun init() {
 
         val taml = Taml(TuringCore.INSTANCE.resolvePath("CustomColors.yml"))
-        val colors: List<String> = taml["colors", listOf()]
+        val colors: List<String> = taml.get("colors", listOf())
         for (str in colors) {
             val split = str.split("@")
             colorMap[split[0]] = "<${split[1]}>"
         }
-
-//        val skin = PlayerSkin.fromUsername("Anzide")
-//        taml["a"] = skin
-//        taml["b"] = Test(1, 2)
-//        taml["c"] = Player(1, 2)
-
-
-//        taml.save()
-//        println(Yaml().dump(Test(1, 2)))
 
     }
 

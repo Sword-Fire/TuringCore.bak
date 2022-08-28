@@ -5,6 +5,8 @@ plugins {
     id 'groovy'
     id 'java'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    //插件报错
+//    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.10'
 }
 
 //取消-all后缀
@@ -39,8 +41,9 @@ dependencies {
 
     // kotlin
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:1.6.20"
-    // kotlin coroutines,which Minestom seems don't contain
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+
 
     //dependency for groovy
     compileOnly 'org.fusesource.jansi:jansi:2.4.0'

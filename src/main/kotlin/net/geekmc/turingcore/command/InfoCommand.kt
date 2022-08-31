@@ -1,13 +1,11 @@
 package net.geekmc.turingcore.command
 
 import net.geekmc.turingcore.color.send
-import net.geekmc.turingcore.instance.InstanceService
+import net.geekmc.turingcore.extender.getLineOfSightEntity
 import net.minestom.server.command.builder.arguments.ArgumentLiteral
-import net.minestom.server.item.Material
 import world.cepi.kstom.command.arguments.literal
 import world.cepi.kstom.command.kommand.Kommand
 
-//TODO : 查看指针实体；指针方块；手上物品
 object InfoCommand : Kommand({
 
     val hand = ArgumentLiteral("hand").setDefaultValue("hand")
@@ -19,16 +17,24 @@ object InfoCommand : Kommand({
     }
 
     syntax(hand) {
-        player.send(player.itemInMainHand.toItemNBT().toString())
+        player.send("&y手中物品信息:")
+        player.send("&rNbt: " + player.itemInMainHand.toItemNBT().toString())
     }.onlyPlayers()
 
-    syntax(block){
-//        player.send(player.getTargetBlockPosition(20))
-        for (pos in player.getLineOfSight(5)){
-            val b = InstanceService.getInstance("world").getBlock(pos)
-            player.send(b.registry().material().toString()+" "+pos.toString())
-        }
+    syntax(block) {
+        player.send("&y指向方块信息:")
+        val pos = player.getLineOfSight(20)[0]?:return@syntax
+        val b = player.instance?.getBlock(pos) ?: return@syntax
+        player.send("&gMaterial: " + b.registry().material())
+        player.send("&gNamespaceId: " + b.registry().namespace())
+        player.send("&gBlockEntity: " + b.registry().blockEntity())
+        player.send("&rNbt: " + b.nbt().toString())
 
+    }.onlyPlayers()
+
+    syntax(entity) {
+        player.send("&y指向生物信息:")
+        player.send("&rNbt: " + player.getLineOfSightEntity(20.0))
     }.onlyPlayers()
 
 }, "info")

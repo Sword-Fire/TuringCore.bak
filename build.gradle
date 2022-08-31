@@ -35,7 +35,7 @@ dependencies {
 //    compileOnly 'net.geekmc.turinglib:TuringLib:1.0.0'
 
     // Minestom
-    compileOnly('com.github.Minestom:Minestom:7af3e1c2e2') {
+    compileOnly('com.github.Minestom:Minestom:-SNAPSHOT') {
         exclude group: 'org.tinylog'
     }
 

@@ -1,44 +1,38 @@
 package net.geekmc.turingcore.command
 
 import net.geekmc.turingcore.color.send
-import net.minestom.server.command.CommandSender
-import net.minestom.server.command.builder.Command
-import net.minestom.server.command.builder.CommandContext
-import net.minestom.server.command.builder.CommandExecutor
-import net.minestom.server.command.builder.arguments.ArgumentType
+import net.geekmc.turingcore.extender.args
+import net.geekmc.turingcore.extender.findPlayers
+import net.geekmc.turingcore.extender.foldToString
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.entity.Player
-import net.minestom.server.utils.entity.EntityFinder
+import world.cepi.kstom.command.kommand.Kommand
 
-object KillCommand : Command("kill") {
-    init {
+object KillCommand : Kommand({
 
-        defaultExecutor =
-            CommandExecutor { sender, _ ->
-                sender.send("&c命令用法不正确。")
-            }
+    val targetArg = ArgumentEntity("target").onlyPlayers(true)
 
-        addSyntax({ sender: CommandSender, _: CommandContext ->
-
-            if (sender !is Player) {
-                sender.send("&c只有玩家能使用这个命令")
-                return@addSyntax
-            }
-            sender.kill()
-
-        })
-
-        addSyntax({ sender: CommandSender, context: CommandContext ->
-
-            val finder = context.get<EntityFinder>("player")
-            val p = finder.findFirstPlayer(null, null)
-            if (p == null) {
-                sender.send("找不到玩家 ${context.getRaw("player")}.")
-                return@addSyntax
-            }
-
-            p.kill()
-
-        }, ArgumentEntity("player").onlyPlayers(true).singleEntity(true))
+    syntax {
+        if(sender !is Player) {
+            sender.send("&r只有玩家能使用这个命令!")
+            return@syntax
+        }
+        sender.send("&r命令用法不正确: /${context.input}")
     }
-}
+
+    syntax(targetArg) {
+
+        val players = (!targetArg).findPlayers(sender)
+
+        if (players.isEmpty()) {
+            sender.send("&r找不到玩家: ${args.getRaw(targetArg)}")
+            return@syntax
+        }
+        players.forEach {
+            it.kill()
+        }
+        sender.send("&r已杀死玩家: ${players.foldToString()}")
+
+    }
+
+}, "kill")

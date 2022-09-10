@@ -12,7 +12,8 @@ import kotlin.collections.LinkedHashMap
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.exists
 
-class Taml(path: Path, yaml: Yaml = defaultYaml) {
+// 代表和一个Yaml文件关联的、存储在内存中的数据。
+class Data(path: Path, yaml: Yaml = defaultYaml) {
 
     companion object {
 

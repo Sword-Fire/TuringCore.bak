@@ -1,5 +1,6 @@
 package net.geekmc.turingcore
 
+import net.geekmc.turingcore.blockhandler.GrassBlockHandler
 import net.geekmc.turingcore.color.ColorUtil
 import net.geekmc.turingcore.color.send
 import net.geekmc.turingcore.color.toComponent
@@ -19,13 +20,10 @@ import net.minestom.server.utils.callback.CommandCallback
 import world.cepi.kstom.Manager
 import world.cepi.kstom.command.register
 import world.cepi.kstom.event.listenOnly
+import world.cepi.kstom.util.register
 
 class TuringCore : Extension() {
 
-    companion object {
-        lateinit var INSTANCE: TuringCore
-            private set
-    }
 
     override fun preInitialize() {
         super.preInitialize()
@@ -34,25 +32,23 @@ class TuringCore : Extension() {
 
     override fun initialize() {
 
-        logger.info("TuringCore initialized.")
+        logger.info("TuringCore initializing...") //ColorUtil not usable here
 
-        // Init logger for all extensions
-        TuringFramework.init()
-        val registry = TuringFramework.registerExtension("net.geekmc.turingcore", this)
-        registry.consolePrefix = "[TuringCore]"
-        registry.playerPrefix = "&f[&gTuringCore&f]".toComponent()
-
-        // enable color util, very high priority
+        // Init ColorUtil for all extensions, the highest priority
         saveResource("CustomColors.yml")
         ColorUtil.init()
 
-        // enable offline skin
-        SkinService.init()
+        // Init Turing Framework for all extensions
+        TuringFramework.init()
+        registerFramework()
 
-        // enable Motd
-        MotdService.init()
+        // Init offline skin
+        SkinService.start()
 
-        // set player's spawn world
+        // Enable Motd
+        MotdService.start()
+
+        // Set player's spawn world
         InstanceService.initialize()
         InstanceService.createInstanceContainer(InstanceService.MAIN_INSTANCE)
         val world = InstanceService.getInstance(InstanceService.MAIN_INSTANCE)
@@ -63,10 +59,53 @@ class TuringCore : Extension() {
             player.sendMessage("Welcome to server, ${player.username} !")
         }
 
-        // register commands
+        registerCommands()
+        registerBlockHandlers()
+
+        // set chat format
+        GlobalEvent.listenOnly<PlayerChatEvent> {
+            setChatFormat {
+                "${player.displayName ?: player.username}: $message".toComponent()
+            }
+        }
+
+        Logger.info("TuringCore initialized.")
+
+    }
+
+    override fun terminate() {
+        SkinService.close()
+        Logger.info("TuringCore terminated.")
+    }
+
+    private fun registerBlockHandlers() {
+
+        //TODO 写个拓展方法，用自己的NID注册
+        GrassBlockHandler.register("minecraft:grass_block")
+        // register block handlers
+        // register Handler的意义是，读取地图时，会用方块的原版NID做key查找是否有对应的BlockHandlerSupplier提供BlockHandler
+        // 并且，保存世界时，只有BlockHandler里注册过的Tag会被存到地图（等等，这条好像是错的）
+        //        Block.values().forEach {
+        //            if (it.name().endsWith("sign")) {
+        //                println("registered handler ${it.name()}")
+        //                SignHandler.register(it.name())
+        //            }
+        //        }
+        //        SignHandler.register("minecraft:sign")
+    }
+
+    private fun registerFramework() {
+        val registry = TuringFramework.registerExtension("net.geekmc.turingcore", this)
+        registry.consolePrefix = "[TuringCore] "
+        registry.playerPrefix = "&f[&gTuringCore&f] ".toComponent()
+    }
+
+    private fun registerCommands() {
+
+        // Set unknown command fallback
 
         Manager.command.unknownCommandCallback = CommandCallback { sender, command ->
-            sender.send("&r未知命令: $command")
+            sender.send("&r未知命令: /$command")
         }
 
         SayCommand.register()
@@ -77,30 +116,13 @@ class TuringCore : Extension() {
         KillCommand.register()
         PermissionCommand.register()
         InfoCommand.register()
-
-        // register block handlers
-        // register Handler的意义是，读取地图时，会用方块的原版NID做key查找是否有对应的BlockHandlerSupplier提供BlockHandler
-        // 并且，保存世界时，只有BlockHandler里注册过的Tag会被存到地图（等等，这条好像是错的）
-//        Block.values().forEach {
-//            if (it.name().endsWith("sign")) {
-//                println("registered handler ${it.name()}")
-//                SignHandler.register(it.name())
-//            }
-//        }
-//        SignHandler.register("minecraft:sign")
-
-        // set chat format
-        GlobalEvent.listenOnly<PlayerChatEvent> {
-            setChatFormat {
-                "${player.displayName ?: player.username}: $message".toComponent()
-            }
-        }
-
+        DebugCommand.register()
+        TeleportCommand.register()
     }
 
-    override fun terminate() {
-        SkinService.close()
-        logger.info("TuringCore terminated.")
+    companion object {
+        lateinit var INSTANCE: TuringCore
+            private set
     }
 
 }

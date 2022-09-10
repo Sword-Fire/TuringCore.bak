@@ -2,6 +2,7 @@ package net.geekmc.turingcore.framework
 
 import net.kyori.adventure.text.Component
 import net.minestom.server.extensions.Extension
+import world.cepi.kstom.command.arguments.ArgumentByte
 
 object TuringFramework {
 

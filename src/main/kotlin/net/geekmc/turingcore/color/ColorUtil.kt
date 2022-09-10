@@ -1,10 +1,11 @@
 package net.geekmc.turingcore.color
 
 import net.geekmc.turingcore.TuringCore
-import net.geekmc.turingcore.taml.Taml
+import net.geekmc.turingcore.taml.Data
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.geekmc.turingcore.extender.resolvePath
+import java.util.TreeMap
 
 fun String.toComponent(): Component {
     return ColorUtil.castStringToComponent(this)
@@ -12,18 +13,22 @@ fun String.toComponent(): Component {
 
 object ColorUtil {
 
-    val miniMessage = MiniMessage.miniMessage()
+    private val miniMessage = MiniMessage.miniMessage()
 
-    // Custom key -> MiniMessage tag
+    // Custom key -> MiniMessage tag as string
     // &a -> <#111111> for example
-    val colorMap = mutableMapOf<String, String>()
+    // Sorted by length from largest to smallest.
+    private val colorMap = TreeMap<String, String>() { x, y ->
+        if (x.length != y.length) return@TreeMap -x.length.compareTo(y.length) // *-1
+        return@TreeMap x.compareTo(y)
+    }
 
-    data class Test(var x:Int=0,var y:Int=0)
 
     fun init() {
 
-        val taml = Taml(TuringCore.INSTANCE.resolvePath("CustomColors.yml"))
-        val colors: List<String> = taml.get("colors", listOf())
+        val data = Data(TuringCore.INSTANCE.resolvePath("CustomColors.yml"))
+
+        val colors: List<String> = data.get("colors", listOf())
         for (str in colors) {
             val split = str.split("@")
             colorMap[split[0]] = "<${split[1]}>"

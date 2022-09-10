@@ -1,25 +1,35 @@
-# To type "&" , you could use "&&".
-#TODO 有些颜色太暗了
-#在搞出物品渲染后再调
+# To type "&" in game, you could use "&&".
+
 colors:
-  - "&r@#d44848" # Red
-  - "&dr@#bb5535" # Dark red
+  - "&r@#FF6A6A" # Red
+  - "&dr@#d44848" # Dark red
 
   - "&g@#59c878" # Green
-  - "&dg@#006100" # Dark green
+  - "&lg@#90EE90" # Light Green
+  - "&dg@#228B22" # Dark Green
+  - "&ddg@#006100" # Dark Dark green
   - "&mg@#01847f" # Marrs green
 
   - "&y@#fff352" # Yellow
   - "&dy@#bfd26a" # Dark yellow
 
-  - "&b@#002fa7" # blue
+  - "&b@#88FFFF" # Blue
+  - "&db@#00C5CD" # Dark Blue
+
+  - "&w@#FFFFFF" # White
 
   - "&gr@#b2b6b6" # Gray
-  - "&br@#470009" # Brown
+  - "&br@#bb5535" # Brown
 
   - "&da@#1e2732" # Dark
-  - "&pi@#f9d3e3" # Pink
-  - "&pu@#422256" # Purple
+
+  - "&pi@#FF82AB" # Pink
+  - "&dpi@#FF1493" # Deep Pink
+
+  - "&pu@#AB82FF" # Purple
+  - "&pu@#9B30FF" # Dark Purple
+
+  - "&go#FFC125" # Gold
 
   - "&re@reset" # Reset
   - "&i@italic" # Italic
@@ -29,6 +39,4 @@ colors:
   - "&ob@obfuscated" # obfuscated
   - "&ra@rainbow" # Rainbow
 
-  - "&sakura@#FF69B4"
-
-  - "&Gg@gradient:#FFD700:#FFFF00" # 渐变金
+  - "&Gg@gradient:#FFFF00:#FFD700" # 渐变金

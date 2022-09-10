@@ -2,7 +2,7 @@ package net.geekmc.turingcore.motd
 
 import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.color.toComponent
-import net.geekmc.turingcore.taml.Taml
+import net.geekmc.turingcore.taml.Data
 import net.geekmc.turingcore.extender.GlobalEvent
 import net.geekmc.turingcore.extender.resolvePath
 import net.geekmc.turingcore.extender.saveResource
@@ -23,7 +23,7 @@ object MotdService {
      * Load the icon from the motd.png file and set the ping text,
      * which will be sent to player when they ping the server.
      */
-    fun init() {
+    fun start() {
 
         // save resource
         TuringCore.INSTANCE.saveResource("motd/icon.png")
@@ -31,7 +31,7 @@ object MotdService {
 
         // set motd response data
         motdData = ResponseData()
-        val motdConfig = Taml(TuringCore.INSTANCE.resolvePath("motd/motd.yml"), MotdService.javaClass.classLoader)
+        val motdConfig = Data(TuringCore.INSTANCE.resolvePath("motd/motd.yml"), MotdService.javaClass.classLoader)
 
         //出于玄学原因不支持 MiniMessage
         val descriptionList: List<String> = motdConfig.get("description", listOf())

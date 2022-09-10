@@ -5,10 +5,9 @@ import net.minestom.server.instance.block.BlockHandler
 import net.minestom.server.tag.Tag
 import net.minestom.server.utils.NamespaceID
 
-
 object SignHandler : BlockHandler {
     // 也许不需要Key.key
-    override fun getNamespaceId(): NamespaceID = NamespaceID.from(Key.key("minecraft:sign"))
+    override fun getNamespaceId(): NamespaceID = NamespaceID.from("minecraft:sign")
     override fun getBlockEntityTags(): MutableCollection<Tag<*>> {
         return mutableListOf(
             Tag.Byte("GlowingText"),

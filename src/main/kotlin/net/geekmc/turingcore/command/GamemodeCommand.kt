@@ -4,6 +4,7 @@ import net.geekmc.turingcore.color.send
 import net.geekmc.turingcore.extender.args
 import net.geekmc.turingcore.extender.findPlayers
 import net.geekmc.turingcore.extender.foldToString
+import net.geekmc.turingcore.extender.opSyntax
 import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.Command
 import net.minestom.server.command.builder.CommandExecutor
@@ -38,26 +39,26 @@ object GamemodeCommand : Kommand({
         sender.send("&g已将玩家 &y${player.username} &g的游戏模式设置为 &y${player.gameMode.toString().lowercase()}")
     }
 
-    syntax {
+    opSyntax {
         sender.send("&r命令用法不正确: /${context.input}")
     }
 
-    syntax(modeArg) {
+    opSyntax(modeArg) {
 
         if (sender !is Player) {
             sender.send("&r只有玩家能使用这个命令!")
-            return@syntax
+            return@opSyntax
         }
         setGameMode(player, player, !modeArg)
     }
 
-    syntax(modeArg, targetArg) {
+    opSyntax(modeArg, targetArg) {
 
         val players = (!targetArg).findPlayers(sender)
 
         if (players.isEmpty()) {
             sender.send("&r找不到玩家: ${args.getRaw(targetArg)}")
-            return@syntax
+            return@opSyntax
         }
         players.forEach {
             setGameMode(sender, it, !modeArg)

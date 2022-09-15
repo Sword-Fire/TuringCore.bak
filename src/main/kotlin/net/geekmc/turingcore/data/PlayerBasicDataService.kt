@@ -3,6 +3,7 @@ package net.geekmc.turingcore.data
 import net.geekmc.turingcore.data.json.SerializableData
 import net.geekmc.turingcore.extender.GlobalEvent
 import net.geekmc.turingcore.extender.Pos
+import net.geekmc.turingcore.permission.isOp
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
 import net.minestom.server.event.player.PlayerSpawnEvent
@@ -30,8 +31,13 @@ object PlayerBasicDataService {
             // health
             player.data.get<Float>("health")?.also { player.health = it }
 
+            // op
+            if(player.data.get<Boolean>("op") == null) {
+                player.data["op"] = false
+            }
+
             // gamemode
-            player.gameMode = player.data.get("gamemode") ?: GameMode.ADVENTURE
+            player.gameMode = player.data["gamemode"] ?: GameMode.ADVENTURE
 
             // permissions
             val perms = player.data.get<ArrayList<Permission>>("permissions", arrayListOf())

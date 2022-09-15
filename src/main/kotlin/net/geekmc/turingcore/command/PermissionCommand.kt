@@ -1,10 +1,7 @@
 package net.geekmc.turingcore.command
 
 import net.geekmc.turingcore.color.send
-import net.geekmc.turingcore.extender.args
-import net.geekmc.turingcore.extender.findPlayers
-import net.geekmc.turingcore.extender.foldToString
-import net.geekmc.turingcore.extender.setDefaultValueToSelf
+import net.geekmc.turingcore.extender.*
 import net.minestom.server.command.builder.arguments.ArgumentLiteral
 import net.minestom.server.command.builder.arguments.ArgumentWord
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
@@ -27,20 +24,20 @@ object PermissionCommand : Kommand({
         it.send("&r只有玩家能使用这个命令。")
     }
 
-    syntax {
+    opSyntax {
         sender.send("&r命令用法不正确: /${context.input}")
         sender.send("&r输入 /perm help 来了解用法。")
 
     }
 
-    syntax(addArg, permArg, targetArg) {
+    opSyntax(addArg, permArg, targetArg) {
 
         val players = (!targetArg).findPlayers(sender)
         if (players.isEmpty()) {
             // 不能使用 !target == target.defaultValue
             if (sender !is Player && args.getRaw(targetArg) == "") sender.send("&r非玩家使用该命令时不能省略参数 target 。")
             else sender.send("&r找不到玩家: ${args.getRaw(targetArg)}")
-            return@syntax
+            return@opSyntax
         }
         players.forEach {
             it.addPermission(!permArg)
@@ -49,13 +46,13 @@ object PermissionCommand : Kommand({
         sender.send("&g已将权限 ${!permArg} 赋与 ${players.foldToString()}")
     }
 
-    syntax(removeArg, permArg, targetArg) {
+    opSyntax(removeArg, permArg, targetArg) {
 
         val players = (!targetArg).findPlayers(sender)
         if (players.isEmpty()) {
             if (sender !is Player && args.getRaw(targetArg) == "") sender.send("&r非玩家使用该命令时不能省略参数 target 。")
             else sender.send("&r找不到玩家: ${args.getRaw(targetArg)}")
-            return@syntax
+            return@opSyntax
         }
         players.forEach {
             it.removePermission(!permArg)
@@ -64,13 +61,13 @@ object PermissionCommand : Kommand({
 
     }
 
-    syntax(listArg, targetArg) {
+    opSyntax(listArg, targetArg) {
 
         val target = (!targetArg).findFirstPlayer(sender)
         if (target == null) {
             if (sender !is Player && args.getRaw(targetArg) == "") sender.send("&r非玩家使用该命令时不能省略参数 target 。")
             else sender.send("&r找不到玩家: ${args.getRaw(targetArg)}")
-            return@syntax
+            return@opSyntax
         }
 
         sender.send("&g玩家 ${target.username} 拥有以下权限:")

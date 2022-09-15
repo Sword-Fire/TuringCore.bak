@@ -2,6 +2,7 @@ package net.geekmc.turingcore.command
 
 import net.geekmc.turingcore.color.send
 import net.geekmc.turingcore.extender.foldToString
+import net.geekmc.turingcore.extender.opSyntax
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.command.builder.arguments.relative.ArgumentRelativeVec3
 import net.minestom.server.coordinate.Pos
@@ -18,15 +19,15 @@ object TeleportCommand : Kommand({
         it.send("&r只有玩家能使用这个命令。")
     }
 
-    syntax {
+    opSyntax {
         sender.send("&r命令用法不正确: /${context.input}")
     }
 
-    syntax(vecArg) {
+    opSyntax(vecArg) {
 
         if (sender !is Player) {
             sender.send("&r只有玩家能使用这个命令。")
-            return@syntax
+            return@opSyntax
         }
 
         val pos = Pos.fromPoint((!vecArg).from(player))
@@ -36,7 +37,7 @@ object TeleportCommand : Kommand({
 
     }
 
-    syntax(vecArg, targetArg) {
+    opSyntax(vecArg, targetArg) {
 
         val entities = (!targetArg).find(sender)
         val pos = Pos.fromPoint((!vecArg).from(player))

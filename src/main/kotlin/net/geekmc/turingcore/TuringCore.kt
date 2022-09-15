@@ -59,7 +59,6 @@ class TuringCore : Extension() {
         logger.info("TuringCore initializing...") //ColorUtil not usable here
 
         // Init ColorUtil for all extensions, the highest priority
-        saveResource("CustomColors.yml")
         ColorUtil.init()
 
         // Init Turing Framework for all extensions
@@ -144,6 +143,7 @@ class TuringCore : Extension() {
         InfoCommand.register()
         DebugCommand.register()
         TeleportCommand.register()
+        OpCommand.register()
     }
 
     companion object {

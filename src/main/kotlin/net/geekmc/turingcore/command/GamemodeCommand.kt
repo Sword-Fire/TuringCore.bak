@@ -35,7 +35,7 @@ object GamemodeCommand : Kommand({
             "3", "SPECTATOR" -> GameMode.SPECTATOR
             else -> throw IllegalArgumentException("&r未知的游戏模式 $mode")
         }
-        sender.send("&g已将玩家 &y${player.username} &g的游戏模式设置为 &y${player.gameMode}")
+        sender.send("&g已将玩家 &y${player.username} &g的游戏模式设置为 &y${player.gameMode.toString().lowercase()}")
     }
 
     syntax {

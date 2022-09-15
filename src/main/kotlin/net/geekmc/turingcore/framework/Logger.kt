@@ -29,10 +29,10 @@ object Logger {
 
     }
 
-    fun log(msg: String, msgLevel: DebugLevel) {
+    fun  log(msg: String, msgLevel: DebugLevel) {
         val registry = getRegistry()
         if (registry == null) {
-            TuringCore.INSTANCE.logger.warn("Failed to get the registry when try to log message $msg")
+            TuringCore.INSTANCE.logger.warn("Failed to get the registry when try to log message: $msg")
             return
         }
 

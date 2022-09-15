@@ -1,4 +1,4 @@
-package net.geekmc.turingcore.taml
+package net.geekmc.turingcore.data.yaml
 
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -12,21 +12,21 @@ import kotlin.collections.LinkedHashMap
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.exists
 
+/**
+ * 使用:
+ *```
+ * val data = Yaml(path,yaml/clazz/classloader)
+ * data.get("key") or data["key"]
+ * data.get("key",defaultValue)
+ * data.set("key",value) or data["key"] = value
+ * data.save()
+ * ```
+ * 不支持Minestom对象，只支持原生的Int,Map<Int>,List<Int>之类。
+ *
+ * 主要用于读取配置文件，不推荐用来保存数据。
+ */
 // 代表和一个Yaml文件关联的、存储在内存中的数据。
-class Data(path: Path, yaml: Yaml = defaultYaml) {
-
-    companion object {
-
-        private val defaultYaml: Yaml
-        private val defaultDumperOptions: DumperOptions
-
-        init {
-            // 默认的Yaml风格
-            defaultDumperOptions = DumperOptions()
-            defaultDumperOptions.defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
-            defaultYaml = Yaml(defaultDumperOptions)
-        }
-    }
+class YamlData(path: Path, yaml: Yaml = defaultYaml) {
 
     private val path: Path
     private val rootObject: MutableMap<Any?, Any?>
@@ -125,6 +125,19 @@ class Data(path: Path, yaml: Yaml = defaultYaml) {
 
     fun save() {
         yaml.dump(rootObject, FileWriter(path.absolutePathString()))
+    }
+
+    companion object {
+
+        private val defaultYaml: Yaml
+        private val defaultDumperOptions: DumperOptions
+
+        init {
+            // 默认的Yaml风格
+            defaultDumperOptions = DumperOptions()
+            defaultDumperOptions.defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
+            defaultYaml = Yaml(defaultDumperOptions)
+        }
     }
 
 }

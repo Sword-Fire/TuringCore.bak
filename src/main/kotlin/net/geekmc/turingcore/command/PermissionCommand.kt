@@ -5,9 +5,11 @@ import net.geekmc.turingcore.extender.args
 import net.geekmc.turingcore.extender.findPlayers
 import net.geekmc.turingcore.extender.foldToString
 import net.geekmc.turingcore.extender.setDefaultValueToSelf
+import net.minestom.server.command.builder.arguments.ArgumentLiteral
 import net.minestom.server.command.builder.arguments.ArgumentWord
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.entity.Player
+import world.cepi.kstom.Manager
 import world.cepi.kstom.command.arguments.literal
 import world.cepi.kstom.command.kommand.Kommand
 import world.cepi.kstom.util.addPermission
@@ -15,9 +17,9 @@ import world.cepi.kstom.util.addPermission
 
 object PermissionCommand : Kommand({
 
-    val addArg by literal
+    val addArg = ArgumentLiteral("add")
     val removeArg = ArgumentWord("remove").from("remove", "rem")
-    val listArg by literal
+    val listArg = ArgumentLiteral("list")
     val targetArg = ArgumentEntity("target").onlyPlayers(true).setDefaultValueToSelf()
     val permArg = ArgumentWord("perm")
 

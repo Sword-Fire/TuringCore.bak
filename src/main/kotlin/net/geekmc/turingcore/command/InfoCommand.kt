@@ -37,5 +37,5 @@ object InfoCommand : Kommand({
         player.send("&rNbt: " + player.getLineOfSightEntity(20.0))
     }.onlyPlayers()
 
-}, "info")
+}, "if")
 

@@ -1,7 +1,7 @@
 package net.geekmc.turingcore.color
 
 import net.geekmc.turingcore.TuringCore
-import net.geekmc.turingcore.taml.Data
+import net.geekmc.turingcore.data.yaml.YamlData
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.geekmc.turingcore.extender.resolvePath
@@ -26,11 +26,15 @@ object ColorUtil {
 
     fun init() {
 
-        val data = Data(TuringCore.INSTANCE.resolvePath("CustomColors.yml"))
+        val data = YamlData(TuringCore.INSTANCE.resolvePath("CustomColors.yml"))
 
         val colors: List<String> = data.get("colors", listOf())
         for (str in colors) {
             val split = str.split("@")
+            if (split.size != 2) {
+                TuringCore.INSTANCE.logger.warn("无法解析颜色格式: $str")
+                continue
+            }
             colorMap[split[0]] = "<${split[1]}>"
         }
 

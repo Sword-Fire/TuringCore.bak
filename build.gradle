@@ -1,9 +1,10 @@
 import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.6.20'
-    id 'groovy'
     id 'java'
+    id 'groovy'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+    id "org.jetbrains.kotlin.plugin.serialization" version "1.5.10"
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     //插件报错
 //    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.10'
@@ -40,9 +41,10 @@ dependencies {
     }
 
     // kotlin
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:1.6.20"
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
+    compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    compileOnly 'org.jetbrains.kotlinx:kotlinx-serialization-core:1.4.0'
+    compileOnly 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0'
 
 
     //dependency for groovy

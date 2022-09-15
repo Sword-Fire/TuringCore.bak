@@ -5,6 +5,7 @@ import net.geekmc.turingcore.color.ColorUtil
 import net.geekmc.turingcore.color.send
 import net.geekmc.turingcore.color.toComponent
 import net.geekmc.turingcore.command.*
+import net.geekmc.turingcore.data.PlayerBasicDataService
 import net.geekmc.turingcore.extender.GlobalEvent
 import net.geekmc.turingcore.extender.saveResource
 import net.geekmc.turingcore.framework.Logger
@@ -28,6 +29,29 @@ class TuringCore : Extension() {
     override fun preInitialize() {
         super.preInitialize()
         INSTANCE = this
+
+//        val item = item<WrittenBookMeta.Builder, WrittenBookMeta>(material = Material.WRITTEN_BOOK, amount = 5) {
+//            // Use setters for managing your item properties
+//            displayName = Component.text("Hey!")
+//            damage = 5
+//            unbreakable = true
+//
+//            lore {
+//                +"Hello"
+//                +"<red>Minestom!</red>"
+//            }
+//
+//            title("My first book")
+//            author("Notch")
+//            pages(Component.text("This is the first page"))
+//
+//            // Store data with kotlinx.serialization & the tag API. (Works on all taggable objects)
+//            this["complexData"] = ComplexClass(5, 4, 2, true, InterestingClass("hey", 'h'))
+//            this["complexListData"] = CollectionClass(5, 9, 3, listOf(4, 3))
+//        }.withAmount(7).and {
+//            displayName(Component.text("Hay!"))
+//        }
+
     }
 
     override fun initialize() {
@@ -47,6 +71,8 @@ class TuringCore : Extension() {
 
         // Enable Motd
         MotdService.start()
+
+        PlayerBasicDataService.start()
 
         // Set player's spawn world
         InstanceService.initialize()

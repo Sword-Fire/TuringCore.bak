@@ -29,7 +29,7 @@ colors:
   - "&pu@#AB82FF" # Purple
   - "&pu@#9B30FF" # Dark Purple
 
-  - "&go#FFC125" # Gold
+  - "&go@#FFC125" # Gold
 
   - "&re@reset" # Reset
   - "&i@italic" # Italic

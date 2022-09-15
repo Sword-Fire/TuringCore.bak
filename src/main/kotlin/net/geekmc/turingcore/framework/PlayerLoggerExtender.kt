@@ -1,10 +1,9 @@
 package net.geekmc.turingcore.framework
 
-import net.geekmc.turingcore.TuringCore
+import kotlinx.serialization.builtins.IntArraySerializer
+import kotlinx.serialization.builtins.serializer
 import net.geekmc.turingcore.color.send
-import net.geekmc.turingcore.color.toComponent
 import net.minestom.server.entity.Player
-import world.cepi.kstom.Manager
 
 private fun Player.log(msg: String, msgLevel: DebugLevel) {
 

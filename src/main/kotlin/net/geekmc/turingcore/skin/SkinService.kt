@@ -3,7 +3,7 @@ package net.geekmc.turingcore.skin
 import kotlinx.coroutines.*
 import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.coroutine.MinestomAsync
-import net.geekmc.turingcore.taml.Data
+import net.geekmc.turingcore.data.yaml.YamlData
 import net.geekmc.turingcore.extender.GlobalEvent
 import net.geekmc.turingcore.extender.resolvePath
 import net.minestom.server.entity.PlayerSkin
@@ -14,7 +14,7 @@ import net.geekmc.turingcore.extender.saveResource
 
 object SkinService {
 
-    private lateinit var skinData: Data
+    private lateinit var skinData: YamlData
     private lateinit var scope: CoroutineScope // 只能等服务器启动后再设置
     private var isActive = false
 
@@ -26,7 +26,7 @@ object SkinService {
 
         // 加载皮肤数据
         TuringCore.INSTANCE.saveResource("data/SkinData.yml")
-        skinData = Data(
+        skinData = YamlData(
 
             TuringCore.INSTANCE.resolvePath("data/SkinData.yml"),
             SkinService::class.java

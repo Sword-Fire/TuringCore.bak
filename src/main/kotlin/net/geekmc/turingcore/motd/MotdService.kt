@@ -2,7 +2,7 @@ package net.geekmc.turingcore.motd
 
 import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.color.toComponent
-import net.geekmc.turingcore.taml.Data
+import net.geekmc.turingcore.data.yaml.YamlData
 import net.geekmc.turingcore.extender.GlobalEvent
 import net.geekmc.turingcore.extender.resolvePath
 import net.geekmc.turingcore.extender.saveResource
@@ -31,7 +31,7 @@ object MotdService {
 
         // set motd response data
         motdData = ResponseData()
-        val motdConfig = Data(TuringCore.INSTANCE.resolvePath("motd/motd.yml"), MotdService.javaClass.classLoader)
+        val motdConfig = YamlData(TuringCore.INSTANCE.resolvePath("motd/motd.yml"), MotdService.javaClass.classLoader)
 
         //出于玄学原因不支持 MiniMessage
         val descriptionList: List<String> = motdConfig.get("description", listOf())

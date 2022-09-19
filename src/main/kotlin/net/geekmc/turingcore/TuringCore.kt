@@ -7,7 +7,6 @@ import net.geekmc.turingcore.color.toComponent
 import net.geekmc.turingcore.command.*
 import net.geekmc.turingcore.data.PlayerBasicDataService
 import net.geekmc.turingcore.extender.GlobalEvent
-import net.geekmc.turingcore.extender.saveResource
 import net.geekmc.turingcore.framework.Logger
 import net.geekmc.turingcore.framework.TuringFramework
 import net.geekmc.turingcore.instance.InstanceService
@@ -140,7 +139,7 @@ class TuringCore : Extension() {
         GamemodeCommand.register()
         KillCommand.register()
         PermissionCommand.register()
-        InfoCommand.register()
+        SeeCommand.register()
         DebugCommand.register()
         TeleportCommand.register()
         OpCommand.register()

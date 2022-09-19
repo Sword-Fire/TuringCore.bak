@@ -1,10 +1,11 @@
 package net.geekmc.turingcore.command
 
 import net.geekmc.turingcore.color.send
-import net.geekmc.turingcore.extender.args
+import net.geekmc.turingcore.command.kommand.OP
+import net.geekmc.turingcore.command.kommand.args
+import net.geekmc.turingcore.command.kommand.format
 import net.geekmc.turingcore.extender.findPlayers
 import net.geekmc.turingcore.extender.foldToString
-import net.geekmc.turingcore.extender.opSyntax
 import net.geekmc.turingcore.framework.DebugLevel
 import net.geekmc.turingcore.framework.debugLevel
 import net.minestom.server.command.builder.arguments.ArgumentWord
@@ -23,21 +24,21 @@ object DebugCommand : Kommand({
         list.toTypedArray()
     })
 
-    opSyntax {
+    format(OP) {
         sender.send("&r命令用法不正确: /${context.input}")
     }
 
-    opSyntax(levelArg) {
+    format(OP, levelArg) {
         sender.debugLevel = enumValueOf((!levelArg).toString().uppercase())
         sender.send("&g你的调试等级已设为 &y${(!levelArg).toString().uppercase()}.")
     }
 
-    opSyntax(levelArg, targetArg) {
+    format(OP, levelArg, targetArg) {
 
         val players = (!targetArg).findPlayers(sender)
         if (players.isEmpty()) {
             sender.send("&r找不到玩家: ${args.getRaw(targetArg)}")
-            return@opSyntax
+            return@format
         }
         players.forEach {
             it.debugLevel = enumValueOf((!levelArg).toString().uppercase())

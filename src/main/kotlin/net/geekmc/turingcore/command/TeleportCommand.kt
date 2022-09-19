@@ -1,8 +1,10 @@
 package net.geekmc.turingcore.command
 
 import net.geekmc.turingcore.color.send
+import net.geekmc.turingcore.command.kommand.OP
+import net.geekmc.turingcore.command.kommand.PLAYER
+import net.geekmc.turingcore.command.kommand.format
 import net.geekmc.turingcore.extender.foldToString
-import net.geekmc.turingcore.extender.opSyntax
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.command.builder.arguments.relative.ArgumentRelativeVec3
 import net.minestom.server.coordinate.Pos
@@ -15,19 +17,15 @@ object TeleportCommand : Kommand({
     val vecArg = ArgumentRelativeVec3("vec")
     val targetArg = ArgumentEntity("target")
 
-    playerCallbackFailMessage = {
-        it.send("&r只有玩家能使用这个命令。")
-    }
-
-    opSyntax {
+    format(OP) {
         sender.send("&r命令用法不正确: /${context.input}")
     }
 
-    opSyntax(vecArg) {
+    format(OP, PLAYER, vecArg) {
 
         if (sender !is Player) {
             sender.send("&r只有玩家能使用这个命令。")
-            return@opSyntax
+            return@format
         }
 
         val pos = Pos.fromPoint((!vecArg).from(player))
@@ -37,7 +35,7 @@ object TeleportCommand : Kommand({
 
     }
 
-    opSyntax(vecArg, targetArg) {
+    format(OP, vecArg, targetArg) {
 
         val entities = (!targetArg).find(sender)
         val pos = Pos.fromPoint((!vecArg).from(player))

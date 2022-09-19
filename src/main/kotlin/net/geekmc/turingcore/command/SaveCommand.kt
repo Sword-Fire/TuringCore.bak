@@ -2,12 +2,13 @@ package net.geekmc.turingcore.command
 
 
 import net.geekmc.turingcore.color.send
-import net.geekmc.turingcore.extender.opSyntax
+import net.geekmc.turingcore.command.kommand.OP
+import net.geekmc.turingcore.command.kommand.format
 import net.geekmc.turingcore.instance.InstanceService
 import world.cepi.kstom.command.kommand.Kommand
 
 object SaveCommand : Kommand({
-    opSyntax {
+    format(OP) {
 
         val world = InstanceService.getInstance(InstanceService.MAIN_INSTANCE);
         world.saveInstance() // save tag data in tag handler of instance

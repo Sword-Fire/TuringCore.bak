@@ -7,14 +7,12 @@ import net.minestom.server.ServerProcess
 import net.minestom.server.timer.ExecutionType
 import kotlin.coroutines.CoroutineContext
 
-/**
- * @see [AsyncCoroutineDispatcher]
- */
 val Dispatchers.MinestomAsync: CoroutineDispatcher get() = AsyncCoroutineDispatcher(MinecraftServer.process())
 
 /**
  * Dispatcher to execute task in a [async][ExecutionType.ASYNC] context of the server.
  * @property serverProcess Server's process
+ * @author Tic
  */
 internal class AsyncCoroutineDispatcher(
     private val serverProcess: ServerProcess

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "net.geekmc.turingcore"
-version = "0.0.1-SNAPSHOT"
+version = "0.1.0-SNAPSHOT"
 
 repositories {
     maven { url = uri("https://repo.spongepowered.org/maven") }

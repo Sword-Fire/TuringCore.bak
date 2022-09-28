@@ -8,7 +8,9 @@
     - 修改 `Hard wrap` 为 160 字符。
 - 语言
     - 如无特殊情况，注释应当使用中文编写。
-    - 如项目内存在中文文本（注释、代码文档等），其文案排版参考 [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines)。
+    -
+    如项目内存在中文文本（注释、代码文档等），其文案排版参考 [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines)
+    。
 - 空行
     - 在每个文件（类或接口等）中的第一个成员前和最后一个成员后放置一个空行。
     - 在 `when` 表达式中，多行输入下中间用来隔断的新行可以省略。
@@ -84,7 +86,7 @@ class Profile(val player: Player) {
 
 ## 推送代码
 
-我们采用前端框架 `Angular`
+我们参考前端框架 `Angular`
 的 [提交信息规范](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#)。
 
 建议搭配使用 IDEA 插件 [git-commit-template](https://plugins.jetbrains.com/plugin/9861-git-commit-template) 以快速上手。
@@ -123,3 +125,7 @@ docs: update README
 - **refactor**: 重构。
 - **style**: 不影响代码的更改 (空格或格式化等)。
 - **test**: 添加测试。
+
+## 版本格式
+
+详见 [Semver 规范](https://semver.org/lang/zh-CN/)。

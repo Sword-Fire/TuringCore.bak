@@ -14,7 +14,7 @@ open class SerializableData(input: String) {
     val serializedData: LinkedHashMap<String, String>
 
     init {
-        serializedData = turingJson.decodeFromString(input)
+        serializedData = TURING_JSON.decodeFromString(input)
     }
 
     companion object {
@@ -39,7 +39,7 @@ open class SerializableData(input: String) {
             }
             serializedData.contains(key) -> {
                 trace("get $key from serializedData")
-                val value = turingJson.decodeFromString<T>(serializedData[key]!!)
+                val value = TURING_JSON.decodeFromString<T>(serializedData[key]!!)
                 readData[key] = value
                 return value
             }
@@ -52,13 +52,13 @@ open class SerializableData(input: String) {
 
     inline operator fun <reified T : @Serializable Any> set(key: String, value: T) {
         writeData[key] = value
-        writeDataFunc[key] = { turingJson.encodeToString(value) }
+        writeDataFunc[key] = { TURING_JSON.encodeToString(value) }
     }
 
     fun saveToString(): String {
         writeData.keys.forEach {
             serializedData[it] = writeDataFunc[it]!!()
         }
-        return turingJson.encodeToString(serializedData)
+        return TURING_JSON.encodeToString(serializedData)
     }
 }

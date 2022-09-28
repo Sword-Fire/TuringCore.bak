@@ -17,7 +17,7 @@ import net.geekmc.turingcore.service.impl.skin.SkinService
 import net.geekmc.turingcore.util.color.ColorUtil
 import net.geekmc.turingcore.util.color.message
 import net.geekmc.turingcore.util.color.toComponent
-import net.geekmc.turingcore.util.globalEvent
+import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.geekmc.turingcore.util.info
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.event.player.PlayerChatEvent
@@ -61,12 +61,12 @@ class TuringCore : Extension() {
             active()
             createInstanceContainer(MAIN_INSTANCE_ID)
             val world = getInstance(MAIN_INSTANCE_ID)
-            globalEvent.listenOnly<PlayerLoginEvent> {
+            GLOBAL_EVENT.listenOnly<PlayerLoginEvent> {
                 setSpawningInstance(world)
                 player.respawnPoint = Pos(0.0, 40.0, 0.0)
                 player.sendMessage("Welcome to TuringServer, ${player.username}!")
             }
-            globalEvent.listenOnly<PlayerLoginEvent> {
+            GLOBAL_EVENT.listenOnly<PlayerLoginEvent> {
                 setSpawningInstance(world)
                 player.respawnPoint = Pos(0.0, 40.0, 0.0)
                 player.sendMessage("Welcome to server, ${player.username} !")
@@ -77,7 +77,7 @@ class TuringCore : Extension() {
         // 注册方块。
         registerBlockHandlers()
         // 临时监听器。
-        globalEvent.listenOnly<PlayerChatEvent> {
+        GLOBAL_EVENT.listenOnly<PlayerChatEvent> {
             setChatFormat {
 
                 "${player.displayName ?: player.username}: $message".toComponent()

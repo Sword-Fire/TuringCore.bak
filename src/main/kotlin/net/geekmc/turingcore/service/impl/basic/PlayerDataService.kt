@@ -2,7 +2,7 @@ package net.geekmc.turingcore.service.impl.basic
 
 import net.geekmc.turingcore.data.json.JsonData
 import net.geekmc.turingcore.service.AbstractService
-import net.geekmc.turingcore.util.globalEvent
+import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.minestom.server.entity.Player
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.player.PlayerDisconnectEvent
@@ -46,13 +46,13 @@ class PlayerDataService private constructor(private val id: String, val producer
     }
 
     override fun onEnable() {
-        globalEvent.addListener(loginListener)
-        globalEvent.addListener(disconnectListener)
+        GLOBAL_EVENT.addListener(loginListener)
+        GLOBAL_EVENT.addListener(disconnectListener)
     }
 
     override fun onDisable() {
-        globalEvent.removeListener(loginListener)
-        globalEvent.removeListener(disconnectListener)
+        GLOBAL_EVENT.removeListener(loginListener)
+        GLOBAL_EVENT.removeListener(disconnectListener)
     }
 
     fun getPlayerData(player: Player): JsonData {

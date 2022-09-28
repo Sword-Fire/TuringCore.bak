@@ -14,7 +14,7 @@ import world.cepi.kstom.serializer.*
 
 
 @OptIn(ExperimentalSerializationApi::class)
-val turingModule = SerializersModule {
+val TURING_MODULE = SerializersModule {
 
     contextual(BlockSerializer)
     polymorphicDefaultSerializer(Block::class) { BlockSerializer }
@@ -53,8 +53,8 @@ val turingModule = SerializersModule {
     contextual(PermissionSerializer)
 }
 
-val turingJson = Json {
-    serializersModule = turingModule
+val TURING_JSON = Json {
+    serializersModule = TURING_MODULE
     isLenient = true
     ignoreUnknownKeys = true
 }

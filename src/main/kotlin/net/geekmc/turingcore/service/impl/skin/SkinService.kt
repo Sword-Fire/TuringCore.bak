@@ -5,7 +5,7 @@ import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.data.yaml.YamlData
 import net.geekmc.turingcore.service.AbstractService
 import net.geekmc.turingcore.util.coroutine.minestomAsync
-import net.geekmc.turingcore.util.globalEvent
+import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.geekmc.turingcore.util.resolvePath
 import net.geekmc.turingcore.util.saveResource
 import net.minestom.server.entity.PlayerSkin
@@ -24,7 +24,7 @@ object SkinService : AbstractService() {
         TuringCore.INSTANCE.saveResource(PATH)
         // 加载皮肤数据。
         skinData = YamlData(TuringCore.INSTANCE.resolvePath(PATH), SkinService::class.java)
-        globalEvent.listen<PlayerSpawnEvent> {
+        GLOBAL_EVENT.listen<PlayerSpawnEvent> {
             handler {
                 if (!isFirstSpawn) {
                     return@handler

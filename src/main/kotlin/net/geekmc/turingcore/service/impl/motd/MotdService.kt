@@ -4,7 +4,7 @@ import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.data.yaml.YamlData
 import net.geekmc.turingcore.service.AbstractService
 import net.geekmc.turingcore.util.color.toComponent
-import net.geekmc.turingcore.util.globalEvent
+import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.geekmc.turingcore.util.resolvePath
 import net.geekmc.turingcore.util.saveResource
 import net.minestom.server.event.server.ServerListPingEvent
@@ -32,7 +32,7 @@ object MotdService : AbstractService() {
             description = (descriptions[0] + "\n" + descriptions[1]).toComponent()
             favicon = getIconAsBase64() ?: return@apply
         }
-        globalEvent.listenOnly<ServerListPingEvent> {
+        GLOBAL_EVENT.listenOnly<ServerListPingEvent> {
             responseData = motdData
         }
     }

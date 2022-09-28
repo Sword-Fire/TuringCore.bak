@@ -2,7 +2,7 @@ package net.geekmc.turingcore.command.management
 
 import net.geekmc.turingcore.command.args
 import net.geekmc.turingcore.command.opSyntax
-import net.geekmc.turingcore.service.impl.basic.PlayerBasicDataService.getData
+import net.geekmc.turingcore.service.impl.basic.data
 import net.geekmc.turingcore.util.color.message
 import net.minestom.server.command.builder.arguments.ArgumentBoolean
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
@@ -26,7 +26,7 @@ object CommandOp : Kommand({
             sender.message("&r找不到玩家: ${args.getRaw(targetArg)}")
             return@opSyntax
         }
-        player.getData()["op"] = !booleanArg
+        player.data["op"] = !booleanArg
         sender.message("&g已将玩家玩家 &y${player.username} &g的管理员权限设置为 &r${!booleanArg}")
     }
 }, name = "operator", aliases = arrayOf("op"))

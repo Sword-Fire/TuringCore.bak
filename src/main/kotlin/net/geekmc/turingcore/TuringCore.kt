@@ -79,6 +79,7 @@ class TuringCore : Extension() {
         // 临时监听器。
         globalEvent.listenOnly<PlayerChatEvent> {
             setChatFormat {
+
                 "${player.displayName ?: player.username}: $message".toComponent()
             }
         }

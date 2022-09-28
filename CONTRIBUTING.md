@@ -47,7 +47,7 @@ class Profile(val player: Player) {
         // 初始化注册事件
         fun init() {
             globalEvent.listenOnly<PlayerLoginEvent> {
-                profiles[player.name.toString()] = Profile(player).apply {
+                profiles[player.username] = Profile(player).apply {
                     read()
                 }
                 val userName = player.username
@@ -67,7 +67,7 @@ class Profile(val player: Player) {
                 }
             }
             globalEvent.listenOnly<PlayerDisconnectEvent> {
-                profiles.remove(player.name.toString())?.apply {
+                profiles.remove(player.username)?.apply {
                     save()
                 }
             }

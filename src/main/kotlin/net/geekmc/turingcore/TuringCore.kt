@@ -10,7 +10,7 @@ import net.geekmc.turingcore.command.management.CommandPermission
 import net.geekmc.turingcore.command.management.CommandSave
 import net.geekmc.turingcore.command.management.CommandStop
 import net.geekmc.turingcore.framework.TuringFrameWork
-import net.geekmc.turingcore.service.impl.basic.PlayerBasicDataService
+import net.geekmc.turingcore.service.impl.player.impl.PlayerBasicDataService
 import net.geekmc.turingcore.service.impl.instance.InstanceService
 import net.geekmc.turingcore.service.impl.motd.MotdService
 import net.geekmc.turingcore.service.impl.skin.SkinService
@@ -93,7 +93,14 @@ class TuringCore : Extension() {
         registry.playerPrefix = "&f[&gTuringCore&f] ".toComponent()
     }
 
+
+    /**
+     * 注册 BlockHandler 的意义是在读取地图时，
+     * 会用方块的 NID 作为键值查找是否有对应的 BlockHandlerSupplier 提供 BlockHandler。
+     * 并且保存世界时，只有 BlockHandler 里注册过的 Tag 会被存到地图里。（真实性存疑）
+     */
     private fun registerBlockHandlers() {
+        // TODO: 写一个用自己 NID 注册的扩展方法。
         GrassBlockHandler.register("minecraft:grass_block")
     }
 

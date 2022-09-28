@@ -1,6 +1,8 @@
-package net.geekmc.turingcore.service.impl.basic
+package net.geekmc.turingcore.service.impl.player.impl
 
 import net.geekmc.turingcore.service.AbstractService
+import net.geekmc.turingcore.service.impl.player.PlayerDataService
+import net.geekmc.turingcore.service.impl.player.data
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.GameMode
 import net.minestom.server.permission.Permission
@@ -17,6 +19,7 @@ object PlayerBasicDataService : AbstractService() {
         service = PlayerDataService.register("turingcore.basic") {
             Path.of("PlayerData/${it.username}.json")
         }
+        // TODO: 补充药水效果等代码。
         registerLoginEvent()
         registerDisconnectEvent()
     }
@@ -27,9 +30,9 @@ object PlayerBasicDataService : AbstractService() {
     private fun registerLoginEvent() {
         service.onLogin {
             // 血量。
-            player.data.get<Float>("health")?.apply { player.health = this }
+            player.data.get<Float>("health")?.let { player.health = it }
             // 坐标。
-            player.data.get<Pos>("position")?.also { player.teleport(it) }
+            player.data.get<Pos>("position")?.let { player.teleport(it) }
             // 管理员判断，这里的代码我没看懂。
             if (player.data.get<Boolean>("isOp") == null) {
                 player.data["isOp"] = false

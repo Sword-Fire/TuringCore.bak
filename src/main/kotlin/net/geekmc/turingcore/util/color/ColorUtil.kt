@@ -30,13 +30,16 @@ object ColorUtil {
         TuringCore.INSTANCE.saveResource(PATH)
         val data = YamlData(TuringCore.INSTANCE.resolvePath(PATH))
         val colors = data.get<List<String>>("colors", emptyList())
-        colors.forEach {
-            val split = it.split("@")
-            if (split.size != 2) {
-                warn("无法解析颜色格式: $it")
-                return@forEach
+
+        colors
+            .filter { it.isNotEmpty() && it.isNotBlank() }
+            .forEach {
+                val split = it.split("@")
+                if (split.size != 2) {
+                    warn("无法解析颜色格式: $it")
+                    return@forEach
+                }
+                colorMap += split[0] to "<${split[1]}>"
             }
-            colorMap += split[0] to "<${split[1]}>"
-        }
     }
 }

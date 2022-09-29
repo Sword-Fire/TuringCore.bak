@@ -1,10 +1,9 @@
 package net.geekmc.turingcore.util
 
 import net.geekmc.turingcore.TuringCore
-import world.cepi.kstom.util.log
 
 fun info(vararg message: Any) {
-    message.forEach { TuringCore.INSTANCE.log.info(it.toString()) }
+    message.forEach { TuringCore.INSTANCE.logger.info(it.toString()) }
 }
 
 fun trace(vararg message: Any) {

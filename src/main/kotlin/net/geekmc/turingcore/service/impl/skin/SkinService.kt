@@ -4,7 +4,7 @@ import kotlinx.coroutines.*
 import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.data.yaml.YamlData
 import net.geekmc.turingcore.service.AbstractService
-import net.geekmc.turingcore.util.coroutine.minestomAsync
+import net.geekmc.turingcore.util.coroutine.MinestomAsync
 import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.geekmc.turingcore.util.resolvePath
 import net.geekmc.turingcore.util.saveResource
@@ -20,7 +20,7 @@ object SkinService : AbstractService() {
     private lateinit var scope: CoroutineScope
 
     override fun onEnable() {
-        scope = CoroutineScope(Dispatchers.minestomAsync)
+        scope = CoroutineScope(Dispatchers.MinestomAsync)
         TuringCore.INSTANCE.saveResource(PATH)
         // 加载皮肤数据。
         skinData = YamlData(TuringCore.INSTANCE.resolvePath(PATH), SkinService::class.java)

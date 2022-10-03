@@ -7,8 +7,8 @@ import net.minestom.server.ServerProcess
 import net.minestom.server.timer.ExecutionType
 import kotlin.coroutines.CoroutineContext
 
-@Suppress("UnstableApiUsage", "SpellCheckingInspection")
-val Dispatchers.minestomSync: CoroutineDispatcher get() = AsyncCoroutineDispatcher(MinecraftServer.process())
+@Suppress("UnstableApiUsage")
+val Dispatchers.MinestomSync: CoroutineDispatcher get() = AsyncCoroutineDispatcher(MinecraftServer.process())
 
 @Suppress("UnstableApiUsage")
 internal class SyncCoroutineDispatcher(private val serverProcess: ServerProcess) : CoroutineDispatcher() {

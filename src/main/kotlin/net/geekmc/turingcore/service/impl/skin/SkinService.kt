@@ -39,7 +39,7 @@ object SkinService : AbstractService() {
                         PlayerSkin.fromUsername(player.username)
                     } ?: return@launch
                     // 获取的皮肤是新皮肤，则更新，若缓存不存在也会执行更新操作。
-                    // TODO: 每次获取的材质有一小段字段不一样，所以必定更新，暂时无法解决。
+                    // FIXME: 每次获取的材质有一小段字段不一样，所以必定更新，暂时无法解决。
                     if (bean == null || bean.toPlayerSkin().textures() != skin.textures()) {
                         skinData[player.username] = skin.toBean()
                         player.skin = skin
@@ -53,4 +53,17 @@ object SkinService : AbstractService() {
         scope.cancel()
         skinData.save()
     }
+
+    private data class PlayerSkinBean(var textures: String = "", var signature: String = "") {
+
+        fun toPlayerSkin(): PlayerSkin {
+            return PlayerSkin(textures, signature)
+        }
+
+    }
+
+    private fun PlayerSkin.toBean(): PlayerSkinBean {
+        return PlayerSkinBean(textures(), signature())
+    }
+
 }

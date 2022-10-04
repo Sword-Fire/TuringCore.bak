@@ -18,8 +18,19 @@ import kotlin.io.path.exists
 @Suppress("SpellCheckingInspection")
 class YamlData(path: Path, yaml: Yaml = defaultYaml) {
 
+    companion object {
+
+        private val defaultYaml: Yaml
+        private val defaultDumperOptions = DumperOptions()
+
+        init {
+            defaultDumperOptions.defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
+            defaultYaml = Yaml(defaultDumperOptions)
+        }
+    }
+
     private val path: Path
-    private val rootObj: MutableMap<Any?, Any?>
+    private val rootMap: MutableMap<String, Any>
     private var yaml: Yaml
 
     constructor(path: Path, clazz: Class<*>) : this(
@@ -35,7 +46,7 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
     init {
         this.path = path
         this.yaml = yaml
-        rootObj = if (!path.exists()) {
+        rootMap = if (!path.exists()) {
             LinkedHashMap()
         } else {
             yaml.load(FileReader(path.absolutePathString())) ?: LinkedHashMap()
@@ -44,7 +55,7 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
 
     operator fun <T> get(key: String): T? {
         val keys = key.split(".")
-        var obj: Map<Any?, Any?> = rootObj
+        var obj = rootMap
         val iter = keys.iterator()
         while (iter.hasNext()) {
             var next: Any? = iter.next()
@@ -57,7 +68,7 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
                     return null
                 }
                 // String 转成 Integer 作为 Key 未存在，返回空。
-                if (obj[next] == null) {
+                if (obj[next.toString()] == null) {
                     return null
                 }
             }
@@ -66,7 +77,7 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
                 return obj[next] as? T ?: return null
             } else {
                 @Suppress("UNCHECKED_CAST")
-                obj = obj[next] as? Map<Any?, Any?> ?: return null
+                obj = obj[next] as? MutableMap<String, Any> ?: return null
             }
         }
         return null
@@ -76,21 +87,42 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
         return get(key) ?: def
     }
 
+    fun getKeys(deep: Boolean): Set<String> {
+        val keys = hashSetOf<String>()
+
+        @Suppress("UNCHECKED_CAST", "UNCHECKED_CAST")
+        fun process(map: Map<String, Any?>, parent: String = "") {
+            map.forEach { (k, v) ->
+                if (v is MutableMap<*, *>) {
+                    if (deep) {
+                        process(v as MutableMap<String, Any?>, "$parent$k.")
+                    } else {
+                        keys += "$parent$k"
+                    }
+                } else {
+                    keys += "$parent$k"
+                }
+            }
+        }
+        process(rootMap)
+        return keys
+    }
+
     operator fun <T> set(key: String, value: T): Boolean {
         val keys = key.split(".")
-        var obj: MutableMap<Any?, Any?> = rootObj
+        var obj = rootMap
         val iter = keys.iterator()
         while (iter.hasNext()) {
             val next = iter.next()
             if (iter.hasNext()) {
                 // 尝试寻找已经存在的 Map，若不存在则创建。
                 @Suppress("UNCHECKED_CAST")
-                obj = obj[next] as? MutableMap<Any?, Any?> ?: let {
-                    obj[next] = LinkedHashMap<Any?, Any?>()
-                    obj[next] as MutableMap<Any?, Any?>
+                obj = obj[next] as? MutableMap<String, Any> ?: let {
+                    obj[next] = LinkedHashMap<String, Any>()
+                    obj[next] as MutableMap<String, Any>
                 }
             } else {
-                obj[next] = value
+                obj[next] = value ?: error("Value cannot be null.")
                 return true
             }
         }
@@ -98,17 +130,6 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
     }
 
     fun save() {
-        yaml.dump(rootObj, FileWriter(path.absolutePathString()))
-    }
-
-    companion object {
-
-        private val defaultYaml: Yaml
-        private val defaultDumperOptions = DumperOptions()
-
-        init {
-            defaultDumperOptions.defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
-            defaultYaml = Yaml(defaultDumperOptions)
-        }
+        yaml.dump(rootMap, FileWriter(path.absolutePathString()))
     }
 }

@@ -19,6 +19,7 @@ import net.geekmc.turingcore.util.color.message
 import net.geekmc.turingcore.util.color.toComponent
 import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.geekmc.turingcore.util.info
+import net.geekmc.turingcore.util.lang.LangUtil
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.event.player.PlayerChatEvent
 import net.minestom.server.event.player.PlayerLoginEvent
@@ -48,6 +49,8 @@ class TuringCore : Extension() {
         info("TuringCore initializing...")
         // ColorUtil 在这里的优先级最高。
         ColorUtil.init()
+        // 语言。
+        LangUtil.init()
         // 注册框架。
         registerFrameWork()
         // 皮肤服务。（基于玩家名）

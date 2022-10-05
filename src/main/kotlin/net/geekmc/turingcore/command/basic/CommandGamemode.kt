@@ -1,10 +1,11 @@
 package net.geekmc.turingcore.command.basic
 
 import net.geekmc.turingcore.command.args
+import net.geekmc.turingcore.command.basic.CommandGamemode.setGameMode
 import net.geekmc.turingcore.command.findPlayers
 import net.geekmc.turingcore.command.opSyntax
-import net.geekmc.turingcore.command.setGameMode
-import net.geekmc.turingcore.util.color.message
+import net.geekmc.turingcore.util.lang.sendLang
+import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.arguments.ArgumentWord
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.entity.GameMode
@@ -16,7 +17,6 @@ object CommandGamemode : Kommand({
 
     val targetArg = ArgumentEntity("target").onlyPlayers(true)
 
-    // Allow integer 0-3, or the GameMode as string ignoring case, as the args
     val modeArgs = ArgumentWord("mode").from(*kotlin.run {
         mutableListOf<String>().apply {
             addAll(GameMode.values().map { it.toString() })
@@ -26,12 +26,12 @@ object CommandGamemode : Kommand({
     })
 
     opSyntax {
-        sender.message("&r命令用法不正确: /${context.input}")
+        sender.sendLang("message-command-wrong-usage")
     }
 
     opSyntax(modeArgs) {
         if (sender !is Player) {
-            sender.message("&r只有玩家能使用这个命令!")
+            sender.sendLang("message-command-player-only")
             return@opSyntax
         }
         setGameMode(player, player, !modeArgs)
@@ -40,11 +40,26 @@ object CommandGamemode : Kommand({
     opSyntax(modeArgs, targetArg) {
         val players = (!targetArg).findPlayers(sender)
         if (players.isEmpty()) {
-            sender.message("&r找不到玩家: ${args.getRaw(targetArg)}")
+            sender.sendLang("message-command-player-cannot-found", args.getRaw(targetArg))
             return@opSyntax
         }
         players.forEach {
             setGameMode(sender, it, !modeArgs)
         }
     }
-}, name = "gamemode", aliases = arrayOf("gm", "gmode"))
+}, name = "gamemode", aliases = arrayOf("gm", "gmode")) {
+
+    fun setGameMode(sender: CommandSender, player: Player, mode: String) {
+        player.gameMode = when (mode.uppercase()) {
+            "0", "SURVIVAL" -> GameMode.SURVIVAL
+            "1", "CREATIVE" -> GameMode.CREATIVE
+            "2", "ADVENTURE" -> GameMode.ADVENTURE
+            "3", "SPECTATOR" -> GameMode.SPECTATOR
+            else -> kotlin.run {
+                player.sendLang("message-command-gamemode-unknown", mode)
+                return
+            }
+        }
+        sender.sendLang("message-command-gamemode-succ", player.username, mode)
+    }
+}

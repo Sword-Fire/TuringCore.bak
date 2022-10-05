@@ -10,16 +10,16 @@ import net.geekmc.turingcore.command.management.CommandPermission
 import net.geekmc.turingcore.command.management.CommandSave
 import net.geekmc.turingcore.command.management.CommandStop
 import net.geekmc.turingcore.framework.TuringFrameWork
-import net.geekmc.turingcore.service.impl.player.impl.PlayerBasicDataService
 import net.geekmc.turingcore.service.impl.instance.InstanceService
 import net.geekmc.turingcore.service.impl.motd.MotdService
+import net.geekmc.turingcore.service.impl.player.impl.PlayerBasicDataService
 import net.geekmc.turingcore.service.impl.skin.SkinService
-import net.geekmc.turingcore.util.color.ColorUtil
-import net.geekmc.turingcore.util.color.message
-import net.geekmc.turingcore.util.color.toComponent
 import net.geekmc.turingcore.util.GLOBAL_EVENT
+import net.geekmc.turingcore.util.color.ColorUtil
+import net.geekmc.turingcore.util.color.toComponent
 import net.geekmc.turingcore.util.info
-import net.geekmc.turingcore.util.lang.LangUtil
+import net.geekmc.turingcore.util.lang.LanguageUtil
+import net.geekmc.turingcore.util.lang.sendLang
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.event.player.PlayerChatEvent
 import net.minestom.server.event.player.PlayerLoginEvent
@@ -49,8 +49,8 @@ class TuringCore : Extension() {
         info("TuringCore initializing...")
         // ColorUtil 在这里的优先级最高。
         ColorUtil.init()
-        // 语言。
-        LangUtil.init()
+        // 语言工具。
+        LanguageUtil.init()
         // 注册框架。
         registerFrameWork()
         // 皮肤服务。（基于玩家名）
@@ -109,8 +109,8 @@ class TuringCore : Extension() {
 
     @OptIn(ExperimentalTime::class)
     private fun registerCommands() {
-        Manager.command.unknownCommandCallback = CommandCallback { sender, command ->
-            sender.message("&r未知指令: /$command")
+        Manager.command.unknownCommandCallback = CommandCallback { sender, _ ->
+            sender.sendLang("message-command-unknown")
         }
         arrayListOf<Kommand>().apply {
             this += CommandGamemode

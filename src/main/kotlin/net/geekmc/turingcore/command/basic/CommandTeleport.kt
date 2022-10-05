@@ -1,8 +1,8 @@
 package net.geekmc.turingcore.command.basic
 
 import net.geekmc.turingcore.command.opSyntax
-import net.geekmc.turingcore.util.color.message
 import net.geekmc.turingcore.util.foldToString
+import net.geekmc.turingcore.util.lang.sendLang
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
 import net.minestom.server.command.builder.arguments.relative.ArgumentRelativeVec3
 import net.minestom.server.coordinate.Pos
@@ -15,21 +15,21 @@ object CommandTeleport : Kommand({
     val targetArg = ArgumentEntity("target")
 
     playerCallbackFailMessage = {
-        it.message("&r只有玩家能使用这个命令。")
+        it.sendLang("message-command-player-only")
     }
 
     opSyntax {
-        sender.message("&r命令用法不正确: /${context.input}")
+        sender.sendLang("message-command-wrong-usage")
     }
 
     opSyntax(vecArg) {
         if (sender !is Player) {
-            sender.message("&r只有玩家能使用这个命令。")
+            sender.sendLang("message-command-player-only")
             return@opSyntax
         }
         val pos = Pos.fromPoint((!vecArg).from(player))
         player.teleport(pos)
-        sender.message("&g已将你传送至 x:${pos.x} y:${pos.y} z:${pos.z}")
+        sender.sendLang("message-command-teleport-succ", player.username, pos.toString())
     }
 
     opSyntax(vecArg, targetArg) {
@@ -38,12 +38,12 @@ object CommandTeleport : Kommand({
         entities.forEach {
             it.teleport(pos)
         }
-        val info = entities.foldToString(", ") {
+        val name = entities.foldToString(", ") {
             when (it) {
                 is Player -> it.username
                 else -> it.entityType.toString()
             }
         }
-        sender.message("&g已将 &y$info &g传送至 x:${pos.x} y:${pos.y} z:${pos.z}")
+        sender.sendLang("message-command-teleport-succ", name, pos.toString())
     }
 }, name = "teleport", aliases = arrayOf("tp"))

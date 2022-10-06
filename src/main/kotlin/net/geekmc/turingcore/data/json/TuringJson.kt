@@ -12,6 +12,11 @@ import net.minestom.server.item.ItemStack
 import org.jglrxavpok.hephaistos.nbt.NBT
 import world.cepi.kstom.serializer.*
 
+val TURING_JSON = Json {
+    serializersModule = TURING_MODULE
+    isLenient = true
+    ignoreUnknownKeys = true
+}
 
 @OptIn(ExperimentalSerializationApi::class)
 val TURING_MODULE = SerializersModule {
@@ -51,10 +56,4 @@ val TURING_MODULE = SerializersModule {
     polymorphicDefaultDeserializer(BossBar::class) { BossBarSerializer }
 
     contextual(PermissionSerializer)
-}
-
-val TURING_JSON = Json {
-    serializersModule = TURING_MODULE
-    isLenient = true
-    ignoreUnknownKeys = true
 }

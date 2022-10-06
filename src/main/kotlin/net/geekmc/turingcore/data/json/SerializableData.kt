@@ -5,6 +5,10 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import net.geekmc.turingcore.util.trace
 
+/**
+ * 数据类，能序列化为字符串/从字符串反序列化。
+ * 支持存储的对象有kotlin serialization支持的所有对象，和[TURING_MODULE]支持的Minestom对象。
+ */
 open class SerializableData(input: String) {
 
     val writeData = LinkedHashMap<String, @Serializable Any>()
@@ -33,10 +37,12 @@ open class SerializableData(input: String) {
                 trace("get $key from writeData.")
                 return writeData[key] as T
             }
+
             readData.contains(key) -> {
                 trace("get $key from readData")
                 return readData[key] as T
             }
+
             serializedData.contains(key) -> {
                 trace("get $key from serializedData")
                 val value = TURING_JSON.decodeFromString<T>(serializedData[key]!!)

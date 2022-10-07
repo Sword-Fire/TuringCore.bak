@@ -9,13 +9,21 @@ import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import java.nio.file.Path
 
-class PlayerDataService private constructor(private val id: String, val producer: (Player) -> Path) : AbstractService() {
+/**
+ * 玩家数据服务，能够为每个玩家提供一个[SerializableData]。
+ * 通过 [register] 方法注册服务，注册后会自动在玩家登陆时从关联的 Json 文件加载信息到内存成为[JsonData]。
+ * @param name 玩家数据服务的名称。仅用于输出调试信息。
+ * @param pathProducer 用于生成玩家数据文件的路径。
+ */
+class PlayerDataService private constructor(private val name: String, val pathProducer: (Player) -> Path) :
+    AbstractService() {
 
     companion object {
 
-        fun register(id: String, producer: (Player) -> Path) = PlayerDataService(id, producer).apply {
+        fun register(id: String, pathProducer: (Player) -> Path) = PlayerDataService(id, pathProducer).apply {
             active()
         }
+
     }
 
     private val playerNameToDataMap = mutableMapOf<String, JsonData>()
@@ -24,25 +32,19 @@ class PlayerDataService private constructor(private val id: String, val producer
     private val disconnectFunctions = mutableListOf<PlayerDisconnectEvent.() -> Unit>()
 
     private val loginListener = EventListener.of(PlayerLoginEvent::class.java) {
-        it.run {
-            if (player.isDataLoaded()) {
-                throw IllegalStateException("(PlayerDataService) Player data cannot be loaded more than once. (id: $id)")
-            }
-            player.loadData()
-        }
+        // 先加载文件，后运行玩家进服时需要执行的操作。
+        it.player.loadData()
         for (block in loginFunctions) {
-            it.block()
+            block(it)
         }
     }
 
     private val disconnectListener = EventListener.of(PlayerDisconnectEvent::class.java) {
         for (block in disconnectFunctions) {
-            it.block()
+            block(it)
         }
-        it.run {
-            player.saveData()
-            player.unloadData()
-        }
+        it.player.saveData()
+        it.player.unloadData()
     }
 
     override fun onEnable() {
@@ -55,6 +57,9 @@ class PlayerDataService private constructor(private val id: String, val producer
         GLOBAL_EVENT.removeListener(disconnectListener)
     }
 
+    /**
+     * 获取玩家所关联的数据。
+     */
     fun getPlayerData(player: Player): JsonData {
         if (!player.isDataLoaded()) {
             player.loadData()
@@ -62,29 +67,48 @@ class PlayerDataService private constructor(private val id: String, val producer
         return playerNameToDataMap[player.username]!!
     }
 
+    /**
+     * 使用[PlayerDataService]时，应通过onLogin / onDisconnect来提交需要在玩家登录/断开链接时执行的操作，而非使用监听器。
+     * 这能保证先加载文件，再执行操作。
+     */
     fun onLogin(block: PlayerLoginEvent.() -> Unit) {
-        loginFunctions += block
+        loginFunctions.add(block)
     }
 
+    /**
+     * @see onLogin
+     */
     fun onDisconnect(block: PlayerDisconnectEvent.() -> Unit) {
-        disconnectFunctions += block
+        disconnectFunctions.add(block)
     }
 
+    /**
+     * 返回玩家关联的文件是否已被加载。
+     */
     private fun Player.isDataLoaded(): Boolean {
         return playerNameToDataMap.containsKey(username)
     }
 
+    /**
+     * 加载玩家关联的文件。
+     */
     private fun Player.loadData() {
         if (playerNameToDataMap.containsKey(username)) {
-            throw IllegalStateException("(PlayerDataService) Player data cannot be loaded more than once. (id: $id)")
+            throw IllegalStateException("(PlayerDataService) Player data cannot be loaded more than once. (Player Data Service name: $name)")
         }
-        playerNameToDataMap[username] = JsonData.load(producer(this))
+        playerNameToDataMap[username] = JsonData.load(pathProducer(this))
     }
 
+    /**
+     * 卸载玩家关联的文件。
+     */
     private fun Player.unloadData() {
         playerNameToDataMap.remove(username)
     }
 
+    /**
+     * 保存玩家关联的文件。
+     */
     private fun Player.saveData() {
         playerNameToDataMap[username]!!.save()
     }

@@ -12,12 +12,9 @@ import net.minestom.server.item.ItemStack
 import org.jglrxavpok.hephaistos.nbt.NBT
 import world.cepi.kstom.serializer.*
 
-val TURING_JSON = Json {
-    serializersModule = TURING_MODULE
-    isLenient = true
-    ignoreUnknownKeys = true
-}
-
+/**
+ * 在修改这个文件之前，请参考[TURING_JSON]。
+ */
 @OptIn(ExperimentalSerializationApi::class)
 val TURING_MODULE = SerializersModule {
 
@@ -56,4 +53,13 @@ val TURING_MODULE = SerializersModule {
     polymorphicDefaultDeserializer(BossBar::class) { BossBarSerializer }
 
     contextual(PermissionSerializer)
+}
+
+/**
+ * 这个属性必须放在[TURING_MODULE]之后，否则会报错。
+ */
+val TURING_JSON = Json {
+    serializersModule = TURING_MODULE
+    isLenient = true
+    ignoreUnknownKeys = true
 }

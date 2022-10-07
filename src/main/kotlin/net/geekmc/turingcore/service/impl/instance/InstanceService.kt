@@ -20,6 +20,7 @@ object InstanceService : AbstractService() {
 
     override fun onEnable() {
         manager = MinecraftServer.getInstanceManager()
+        // 增加一个具有满亮度的维度。
         fullBrightDimension = DimensionType.builder(NamespaceID.from("full_bright_dimension"))
             .ambientLight(2f)
             .build()

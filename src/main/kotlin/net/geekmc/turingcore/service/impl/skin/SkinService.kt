@@ -12,6 +12,9 @@ import net.minestom.server.entity.PlayerSkin
 import net.minestom.server.event.player.PlayerSpawnEvent
 import world.cepi.kstom.event.listen
 
+/**
+ * 基于玩家名的皮肤服务。
+ */
 object SkinService : AbstractService() {
 
     private const val PATH = "data/SkinData.yml"

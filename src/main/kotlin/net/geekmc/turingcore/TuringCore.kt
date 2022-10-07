@@ -44,7 +44,6 @@ class TuringCore : Extension() {
         INSTANCE = this
     }
 
-    @Suppress("SpellCheckingInspection")
     override fun initialize() {
         info("TuringCore initializing...")
         // ColorUtil 在这里的优先级最高。
@@ -64,16 +63,14 @@ class TuringCore : Extension() {
             active()
             createInstanceContainer(MAIN_INSTANCE_ID)
             val world = getInstance(MAIN_INSTANCE_ID)
+
             GLOBAL_EVENT.listenOnly<PlayerLoginEvent> {
-                setSpawningInstance(world)
-                player.respawnPoint = Pos(0.0, 40.0, 0.0)
-                player.sendMessage("Welcome to TuringServer, ${player.username}!")
-            }
-            GLOBAL_EVENT.listenOnly<PlayerLoginEvent> {
+
                 setSpawningInstance(world)
                 player.respawnPoint = Pos(0.0, 40.0, 0.0)
                 player.sendMessage("Welcome to server, ${player.username} !")
             }
+
         }
         // 注册指令。
         registerCommands()

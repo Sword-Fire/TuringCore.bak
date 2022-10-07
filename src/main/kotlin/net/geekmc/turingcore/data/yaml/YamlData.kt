@@ -15,7 +15,6 @@ import kotlin.io.path.exists
  * 不支持 Minestom 对象，仅支持原生数据类型。
  * 不建议用来保存数据。（仅作为配置文件使用）
  */
-@Suppress("SpellCheckingInspection")
 class YamlData(path: Path, yaml: Yaml = defaultYaml) {
 
     companion object {
@@ -58,9 +57,10 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
         var obj = rootMap
         val iter = keys.iterator()
         while (iter.hasNext()) {
+            // next是字符串
             var next: Any? = iter.next()
+            // 以字符串对象作为key尝试寻找对应的value失败
             if (obj[next] == null) {
-                // 转换失败，返回空。
                 try {
                     next = next.toString().toInt()
                 } catch (exception: java.lang.NumberFormatException) {
@@ -68,6 +68,7 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
                     return null
                 }
                 // String 转成 Integer 作为 Key 未存在，返回空。
+                // TODO 这里有问题？？？
                 if (obj[next.toString()] == null) {
                     return null
                 }
@@ -90,7 +91,7 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
     fun getKeys(deep: Boolean): Set<String> {
         val keys = hashSetOf<String>()
 
-        @Suppress("UNCHECKED_CAST", "UNCHECKED_CAST")
+        @Suppress("UNCHECKED_CAST")
         fun process(map: Map<String, Any?>, parent: String = "") {
             map.forEach { (k, v) ->
                 if (v is MutableMap<*, *>) {

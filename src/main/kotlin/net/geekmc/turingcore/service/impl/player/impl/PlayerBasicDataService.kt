@@ -9,12 +9,14 @@ import net.minestom.server.entity.Player
 import net.minestom.server.permission.Permission
 import java.nio.file.Path
 
+/**
+ * 在玩家离线后存储玩家位置、血量、权限等信息，并在玩家登录时读取。
+ */
 object PlayerBasicDataService : AbstractService() {
 
     lateinit var service: PlayerDataService
         private set
 
-    @Suppress("SpellCheckingInspection")
     override fun onEnable() {
         // 注册服务。
         service = PlayerDataService.register("turingcore.basic") {
@@ -37,7 +39,8 @@ object PlayerBasicDataService : AbstractService() {
         // 血量。
         player.data.get<Float>("health")?.let { player.health = it }
         // 坐标。
-        player.data.get<Pos>("position")?.let { player.teleport(it) }
+        // TODO 取消屏蔽
+//        player.data.get<Pos>("position")?.let { player.teleport(it) }
         // 管理员判断，这里的代码我没看懂。
         if (player.data.get<Boolean>("isOp") == null) {
             player.data["isOp"] = false

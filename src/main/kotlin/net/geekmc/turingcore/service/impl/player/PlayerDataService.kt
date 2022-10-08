@@ -1,10 +1,14 @@
 package net.geekmc.turingcore.service.impl.player
 
+import com.extollit.gaming.ai.path.model.PathObject.active
 import net.geekmc.turingcore.data.json.JsonData
-import net.geekmc.turingcore.service.AbstractService
+import net.geekmc.turingcore.service.MinestomService
+import net.geekmc.turingcore.service.Service
 import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.minestom.server.entity.Player
+import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
+import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerDisconnectEvent
 import net.minestom.server.event.player.PlayerLoginEvent
 import java.nio.file.Path
@@ -16,13 +20,14 @@ import java.nio.file.Path
  * @param pathProducer 用于生成玩家数据文件的路径。
  */
 class PlayerDataService private constructor(private val name: String, val pathProducer: (Player) -> Path) :
-    AbstractService() {
+    MinestomService() {
 
     companion object {
 
-        fun register(id: String, pathProducer: (Player) -> Path) = PlayerDataService(id, pathProducer).apply {
-            active()
-        }
+        fun register(id: String, eventNode: EventNode<Event>, pathProducer: (Player) -> Path) =
+            PlayerDataService(id, pathProducer).apply {
+                start(eventNode)
+            }
 
     }
 

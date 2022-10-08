@@ -3,9 +3,8 @@ package net.geekmc.turingcore.service.impl.skin
 import kotlinx.coroutines.*
 import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.data.yaml.YamlData
-import net.geekmc.turingcore.service.AbstractService
+import net.geekmc.turingcore.service.MinestomService
 import net.geekmc.turingcore.util.coroutine.MinestomAsync
-import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.geekmc.turingcore.util.resolvePath
 import net.geekmc.turingcore.util.saveResource
 import net.minestom.server.entity.PlayerSkin
@@ -15,7 +14,7 @@ import world.cepi.kstom.event.listen
 /**
  * 基于玩家名的皮肤服务。
  */
-object SkinService : AbstractService() {
+object SkinService : MinestomService() {
 
     private const val PATH = "data/SkinData.yml"
 
@@ -27,7 +26,7 @@ object SkinService : AbstractService() {
         TuringCore.INSTANCE.saveResource(PATH)
         // 加载皮肤数据。
         skinData = YamlData(TuringCore.INSTANCE.resolvePath(PATH), SkinService::class.java)
-        GLOBAL_EVENT.listen<PlayerSpawnEvent> {
+        eventNode.listen<PlayerSpawnEvent> {
             handler {
                 if (!isFirstSpawn) {
                     return@handler

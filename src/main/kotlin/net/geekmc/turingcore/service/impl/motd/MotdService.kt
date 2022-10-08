@@ -2,9 +2,8 @@ package net.geekmc.turingcore.service.impl.motd
 
 import net.geekmc.turingcore.TuringCore
 import net.geekmc.turingcore.data.yaml.YamlData
-import net.geekmc.turingcore.service.AbstractService
+import net.geekmc.turingcore.service.MinestomService
 import net.geekmc.turingcore.util.color.toComponent
-import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.geekmc.turingcore.util.resolvePath
 import net.geekmc.turingcore.util.saveResource
 import net.minestom.server.event.server.ServerListPingEvent
@@ -15,8 +14,7 @@ import java.nio.file.Files
 import java.util.*
 import kotlin.io.path.exists
 
-@Suppress("SpellCheckingInspection")
-object MotdService : AbstractService() {
+object MotdService : MinestomService() {
 
     private const val ICON_PATH = "motd/icon.png"
     private const val MOTD_PATH = "motd/motd.yml"
@@ -32,7 +30,7 @@ object MotdService : AbstractService() {
             description = (descriptions[0] + "\n" + descriptions[1]).toComponent()
             favicon = getIconAsBase64() ?: return@apply
         }
-        GLOBAL_EVENT.listenOnly<ServerListPingEvent> {
+        eventNode.listenOnly<ServerListPingEvent> {
             responseData = motdData
         }
     }

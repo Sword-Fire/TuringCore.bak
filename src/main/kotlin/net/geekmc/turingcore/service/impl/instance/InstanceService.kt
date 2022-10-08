@@ -1,6 +1,6 @@
 package net.geekmc.turingcore.service.impl.instance
 
-import net.geekmc.turingcore.service.AbstractService
+import net.geekmc.turingcore.service.IndependentService
 import net.minestom.server.MinecraftServer
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.InstanceManager
@@ -9,7 +9,7 @@ import net.minestom.server.utils.NamespaceID
 import net.minestom.server.world.DimensionType
 import world.cepi.kstom.Manager
 
-object InstanceService : AbstractService() {
+object InstanceService : IndependentService() {
 
     const val MAIN_INSTANCE_ID = "world"
 

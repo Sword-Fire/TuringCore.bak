@@ -1,46 +1,53 @@
 package net.geekmc.turingcore.service.impl.player.impl
 
-import net.geekmc.turingcore.service.AbstractService
+import net.geekmc.turingcore.service.MinestomService
+import net.geekmc.turingcore.service.Service
 import net.geekmc.turingcore.service.impl.player.PlayerDataService
 import net.geekmc.turingcore.service.impl.player.data
+import net.geekmc.turingcore.util.GLOBAL_EVENT
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
+import net.minestom.server.event.player.PlayerSpawnEvent
 import net.minestom.server.permission.Permission
+import world.cepi.kstom.event.listenOnly
 import java.nio.file.Path
 
 /**
  * 在玩家离线后存储玩家位置、血量、权限等信息，并在玩家登录时读取。
  */
-object PlayerBasicDataService : AbstractService() {
+object PlayerBasicDataService : MinestomService() {
 
     lateinit var service: PlayerDataService
         private set
 
     override fun onEnable() {
         // 注册服务。
-        service = PlayerDataService.register("turingcore.basic") {
+        service = PlayerDataService.register("turingcore.basic", eventNode) {
             Path.of("PlayerData/${it.username}.json")
         }
-        // TODO: 补充药水效果等代码。
-        // 在玩家进入事件触发时从关联 Json 文件获取信息，执行相关操作。
         service.onLogin {
             read(player)
         }
-        // 在玩家离线事件触发时将相关信息写入关联 Json 文件。
         service.onDisconnect {
             save(player)
+        }
+        // 保存玩家下线时的位置。
+        eventNode.listenOnly<PlayerSpawnEvent> {
+            if (!isFirstSpawn) return@listenOnly
+            player.data.get<Pos>("position")?.let { player.teleport(it) }
         }
     }
 
     override fun onDisable() {}
 
+    // TODO: 补充药水效果等代码。
     fun read(player: Player) {
         // 血量。
         player.data.get<Float>("health")?.let { player.health = it }
         // 坐标。
-        // TODO 取消屏蔽
-//        player.data.get<Pos>("position")?.let { player.teleport(it) }
+
+        // TODO 待修改并删去
         // 管理员判断，这里的代码我没看懂。
         if (player.data.get<Boolean>("isOp") == null) {
             player.data["isOp"] = false

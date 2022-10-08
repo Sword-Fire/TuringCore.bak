@@ -11,6 +11,7 @@ import net.geekmc.turingcore.command.management.CommandSave
 import net.geekmc.turingcore.command.management.CommandStop
 import net.geekmc.turingcore.framework.TuringFrameWork
 import net.geekmc.turingcore.service.impl.instance.InstanceService
+import net.geekmc.turingcore.service.impl.instance.InstanceService.MAIN_INSTANCE_ID
 import net.geekmc.turingcore.service.impl.motd.MotdService
 import net.geekmc.turingcore.service.impl.player.impl.PlayerBasicDataService
 import net.geekmc.turingcore.service.impl.skin.SkinService
@@ -53,30 +54,28 @@ class TuringCore : Extension() {
         // 注册框架。
         registerFrameWork()
         // 皮肤服务。（基于玩家名）
-        SkinService.active()
+        SkinService.start(GLOBAL_EVENT)
         // Motd 服务。
-        MotdService.active()
+        MotdService.start(GLOBAL_EVENT)
         // 玩家基础信息服务。
-        PlayerBasicDataService.active()
+        PlayerBasicDataService.start(GLOBAL_EVENT)
         // 世界服务。
-        InstanceService.apply {
-            active()
-            createInstanceContainer(MAIN_INSTANCE_ID)
-            val world = getInstance(MAIN_INSTANCE_ID)
+        InstanceService.start()
+        InstanceService.createInstanceContainer(MAIN_INSTANCE_ID)
+        val world = InstanceService.getInstance(MAIN_INSTANCE_ID)
 
-            GLOBAL_EVENT.listenOnly<PlayerLoginEvent> {
+        GLOBAL_EVENT.listenOnly<PlayerLoginEvent> {
 
-                setSpawningInstance(world)
-                player.respawnPoint = Pos(0.0, 40.0, 0.0)
-                player.sendMessage("Welcome to server, ${player.username} !")
-            }
+            setSpawningInstance(world)
+            player.respawnPoint = Pos(0.0, 40.0, 0.0)
+            player.sendMessage("Welcome to server, ${player.username} !")
 
         }
         // 注册指令。
         registerCommands()
         // 注册方块。
         registerBlockHandlers()
-        // 临时监听器。
+        // 处理玩家聊天的临时监听器。
         GLOBAL_EVENT.listenOnly<PlayerChatEvent> {
             setChatFormat {
                 "${player.displayName ?: player.username}: $message".toComponent()
@@ -100,8 +99,7 @@ class TuringCore : Extension() {
      * 并且保存世界时，只有 BlockHandler 里注册过的 Tag 会被存到地图里。（真实性存疑）
      */
     private fun registerBlockHandlers() {
-        // TODO: 写一个用自己 NID 注册的扩展方法。
-        GrassBlockHandler.register("minecraft:grass_block")
+        GrassBlockHandler.register()
     }
 
     @OptIn(ExperimentalTime::class)

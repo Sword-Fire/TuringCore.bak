@@ -16,7 +16,7 @@ import world.cepi.kstom.event.listen
  */
 object SkinService : MinestomService() {
 
-    private const val PATH = "data/SkinData.yml"
+    private const val PATH = "data/skin.yml"
 
     private lateinit var skinData: YamlData
     private lateinit var scope: CoroutineScope

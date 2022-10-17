@@ -1,27 +1,19 @@
 package net.geekmc.turingcore.util.lang
 
-import net.geekmc.turingcore.data.yaml.YamlData
+import net.geekmc.turingcore.util.color.toComponent
+import net.geekmc.turingcore.util.replaceWithOrder
 import net.minestom.server.command.CommandSender
 
 class TypeActionBar : Type {
 
-    lateinit var text: String
-        private set
+    private var text: String? = null
 
-    var duration = 20L
-        private set
-
-    override fun init(node: String, data: YamlData): Boolean {
-        val map = data.get<MutableMap<String, String>>(node) ?: return false
-        if (map["type"]?.lowercase() != "actionbar") {
-            return false
-        }
-        text = map["text"] ?: return false
-        duration = map["duration"]?.toLongOrNull() ?: return false
+    override fun init(source: Map<String, Any>): Boolean {
+        text = source["text"]?.toString() ?: return false
         return true
     }
 
     override fun send(sender: CommandSender, vararg args: Any) {
-        TODO("Not yet implemented")
+        sender.sendActionBar(text?.replaceWithOrder(args)?.toComponent() ?: return)
     }
 }

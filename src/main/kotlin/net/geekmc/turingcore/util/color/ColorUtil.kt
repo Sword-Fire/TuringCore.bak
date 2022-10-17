@@ -8,7 +8,7 @@ import java.util.*
 
 object ColorUtil {
 
-    private const val PATH = "CustomColors.yml"
+    private const val PATH = "colors.yml"
 
     val miniMessage by unsafeLazy {
         MiniMessage.miniMessage()

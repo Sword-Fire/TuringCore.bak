@@ -13,11 +13,10 @@ import org.jglrxavpok.hephaistos.nbt.NBT
 import world.cepi.kstom.serializer.*
 
 /**
- * 在修改这个文件之前，请参考[TURING_JSON]。
+ * 在修改这个文件之前，请参考 [TURING_JSON]。
  */
 @OptIn(ExperimentalSerializationApi::class)
 val TURING_MODULE = SerializersModule {
-
     contextual(BlockSerializer)
     polymorphicDefaultSerializer(Block::class) { BlockSerializer }
     polymorphicDefaultDeserializer(Block::class) { BlockSerializer }
@@ -56,7 +55,7 @@ val TURING_MODULE = SerializersModule {
 }
 
 /**
- * 这个属性必须放在[TURING_MODULE]之后，否则会报错。
+ * 这个属性必须放在 [TURING_MODULE] 之后，否则会报错。
  */
 val TURING_JSON = Json {
     serializersModule = TURING_MODULE

@@ -5,10 +5,21 @@ import net.geekmc.turingcore.util.replaceWithOrder
 import net.minestom.server.command.CommandSender
 
 fun getLangText(node: String, vararg args: Any): String {
-    val lang = LanguageUtil.messageMap[node] ?: return node
-    return lang.replaceWithOrder(args)
+    val text = LanguageUtil.messageMap[node] as? TypeText ?: return node
+    return text.texts?.get(0)?.replaceWithOrder(args) ?: node
+}
+
+fun getLangTextList(node: String, vararg args: Any): List<String> {
+    val type = LanguageUtil.messageMap[node] as? TypeText ?: return mutableListOf(node)
+    val texts = type.texts ?: return mutableListOf(node)
+    return texts.map { it.replaceWithOrder(args) }
 }
 
 fun CommandSender.sendLang(node: String, vararg args: Any) {
-    message(getLangText(node, args))
+    val type = LanguageUtil.messageMap[node]
+    if (type == null) {
+        message(node)
+        return
+    }
+    type.send(this, args)
 }

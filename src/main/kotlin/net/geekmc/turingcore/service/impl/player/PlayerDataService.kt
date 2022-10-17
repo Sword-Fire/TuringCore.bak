@@ -14,8 +14,8 @@ import net.minestom.server.event.player.PlayerLoginEvent
 import java.nio.file.Path
 
 /**
- * 玩家数据服务，能够为每个玩家提供一个[SerializableData]。
- * 通过 [register] 方法注册服务，注册后会自动在玩家登陆时从关联的 Json 文件加载信息到内存成为[JsonData]。
+ * 玩家数据服务，能够为每个玩家提供一个 [SerializableData]。
+ * 通过 [register] 方法注册服务，注册后会自动在玩家登陆时从关联的 Json 文件加载信息到内存成为 [JsonData]。
  * @param name 玩家数据服务的名称。仅用于输出调试信息。
  * @param pathProducer 用于生成玩家数据文件的路径。
  */

@@ -1,11 +1,7 @@
 package net.geekmc.turingcore.service
 
-import net.geekmc.turingcore.util.GLOBAL_EVENT
-import net.minestom.server.event.Event
-import net.minestom.server.event.EventNode
-
 /**
- * 代表一种没有使用任何Minestom事件的服务。
+ * 代表一种没有使用任何 Minestom 事件的服务。
  */
 abstract class IndependentService : Service() {
 
@@ -16,5 +12,4 @@ abstract class IndependentService : Service() {
         isActive = true
         onEnable()
     }
-
 }

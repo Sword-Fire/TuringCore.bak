@@ -63,13 +63,10 @@ class TuringCore : Extension() {
         InstanceService.start()
         InstanceService.createInstanceContainer(MAIN_INSTANCE_ID)
         val world = InstanceService.getInstance(MAIN_INSTANCE_ID)
-
         GLOBAL_EVENT.listenOnly<PlayerLoginEvent> {
-
             setSpawningInstance(world)
             player.respawnPoint = Pos(0.0, 40.0, 0.0)
             player.sendMessage("Welcome to server, ${player.username} !")
-
         }
         // 注册指令。
         registerCommands()
@@ -96,7 +93,7 @@ class TuringCore : Extension() {
     /**
      * 注册 BlockHandler 的意义是在读取地图时，
      * 会用方块的 NID 作为键值查找是否有对应的 BlockHandlerSupplier 提供 BlockHandler。
-     * 并且保存世界时，只有 BlockHandler 里注册过的 Tag 会被存到地图里。（真实性存疑）
+     * 并且保存世界时，只有 BlockHandler 里注册过的 Tag 会被存到地图里。
      */
     private fun registerBlockHandlers() {
         GrassBlockHandler.register()

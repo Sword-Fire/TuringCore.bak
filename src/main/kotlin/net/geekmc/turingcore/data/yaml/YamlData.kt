@@ -29,7 +29,8 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
     }
 
     private val path: Path
-    private val rootMap: MutableMap<String, Any>
+    var rootMap: MutableMap<String, Any>
+        private set
     private var yaml: Yaml
 
     constructor(path: Path, clazz: Class<*>) : this(
@@ -57,9 +58,9 @@ class YamlData(path: Path, yaml: Yaml = defaultYaml) {
         var obj = rootMap
         val iter = keys.iterator()
         while (iter.hasNext()) {
-            // next是字符串
+            // Next 是字符串
             var next: Any? = iter.next()
-            // 以字符串对象作为key尝试寻找对应的value失败
+            // 以字符串对象作为 Key 尝试寻找对应的 Value 失败
             if (obj[next] == null) {
                 try {
                     next = next.toString().toInt()

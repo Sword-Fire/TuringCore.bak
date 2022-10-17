@@ -7,17 +7,35 @@ import net.geekmc.turingcore.util.saveResource
 
 object LanguageUtil {
 
-    private const val PATH = "Languages.yml"
+    private const val PATH = "lang.yml"
 
-    val messageMap = mutableMapOf<String, String>()
+    private val languageType = hashMapOf(
+        "text" to TypeText::class.java,
+        "actionbar" to TypeActionBar::class.java,
+        "title" to TypeTitle::class.java
+    )
+
+    val messageMap = mutableMapOf<String, Type>()
 
     fun init() {
         TuringCore.INSTANCE.saveResource(PATH)
         val data = YamlData(TuringCore.INSTANCE.resolvePath(PATH))
-
-        data.getKeys(deep = false).forEach {
-            val message = data.get<String>(it) ?: return@forEach
-            messageMap[it] = message
+        data.rootMap.forEach { (k, v) ->
+            messageMap[k] = when (v) {
+                is String -> TypeText(v)
+                is List<*> -> TypeText().apply {
+                    init(mutableMapOf("text" to v))
+                }
+                is Map<*, *> -> {
+                    val source = v.map { it.key.toString() to it.value!! }.toMap()
+                    val type = languageType[source["type"]]?.getDeclaredConstructor()?.newInstance()
+                        ?: error("Mismatched language node: ${source["type"]}. ($k)")
+                    type.apply {
+                        init(source)
+                    }
+                }
+                else -> error("Unsupported language node: $v. ($k)")
+            }
         }
     }
 }

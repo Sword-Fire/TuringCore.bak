@@ -3,6 +3,7 @@ package net.geekmc.turingcore
 import net.geekmc.turingcore.block.GrassBlockHandler
 import net.geekmc.turingcore.command.basic.CommandGamemode
 import net.geekmc.turingcore.command.basic.CommandKill
+import net.geekmc.turingcore.command.basic.CommandLang
 import net.geekmc.turingcore.command.basic.CommandTeleport
 import net.geekmc.turingcore.command.debug.CommandInfo
 import net.geekmc.turingcore.command.management.CommandOp
@@ -113,6 +114,7 @@ class TuringCore : Extension() {
             this += CommandPermission
             this += CommandSave
             this += CommandStop
+            this += CommandLang
         }.forEach {
             it.register()
         }

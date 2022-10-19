@@ -55,11 +55,8 @@ object CommandGamemode : Kommand({
             "1", "CREATIVE" -> GameMode.CREATIVE
             "2", "ADVENTURE" -> GameMode.ADVENTURE
             "3", "SPECTATOR" -> GameMode.SPECTATOR
-            else -> kotlin.run {
-                player.sendLang("message-command-gamemode-unknown", mode)
-                return
-            }
+            else -> error("unreachable.")
         }
-        sender.sendLang("message-command-gamemode-succ", player.username, mode)
+        sender.sendLang("message-command-gamemode-succ", player.username, player.gameMode.name)
     }
 }

@@ -1,12 +1,10 @@
 package net.geekmc.turingcore.command
 
-import net.geekmc.turingcore.util.color.message
 import net.geekmc.turingcore.util.isOp
 import net.geekmc.turingcore.util.lang.sendLang
 import net.minestom.server.command.CommandSender
 import net.minestom.server.command.builder.arguments.Argument
 import net.minestom.server.command.builder.arguments.minecraft.ArgumentEntity
-import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
 import net.minestom.server.utils.entity.EntityFinder
 import org.jetbrains.annotations.Contract

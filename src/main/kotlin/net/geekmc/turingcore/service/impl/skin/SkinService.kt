@@ -61,11 +61,9 @@ object SkinService : MinestomService() {
         fun toPlayerSkin(): PlayerSkin {
             return PlayerSkin(textures, signature)
         }
-
     }
 
     private fun PlayerSkin.toBean(): PlayerSkinBean {
         return PlayerSkinBean(textures(), signature())
     }
-
 }

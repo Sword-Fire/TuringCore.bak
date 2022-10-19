@@ -18,6 +18,9 @@ object LanguageUtil {
     val messageMap = mutableMapOf<String, Type>()
 
     fun init() {
+        if (messageMap.isNotEmpty()) {
+            messageMap.clear()
+        }
         TuringCore.INSTANCE.saveResource(PATH)
         val data = YamlData(TuringCore.INSTANCE.resolvePath(PATH))
         data.rootMap.forEach { (k, v) ->
